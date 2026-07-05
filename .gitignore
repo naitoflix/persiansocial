@@ -1,0 +1,14 @@
+# Segreti / config locale (MAI committare il token del bot)
+telegram-bot/config.json
+
+# Config editor / preview locale
+.claude/
+.vscode/
+.idea/
+
+# File di sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+node_modules/
