@@ -363,17 +363,26 @@
   }
 
   /* -- Competitor Analysis ----------------------------------------------- */
+  let cmpSort = "virality"; // metrica di ordinamento della sezione Competitor
+
   function viewCompetitors() {
-    const list = D.COMPETITORS.slice().sort((a, b) => b.virality - a.virality); // sempre per Virality
-    const avg = Math.round(list.reduce((a, c) => a + c.virality, 0) / list.length);
+    const METRICS = [
+      { key: "virality", label: "Virality", color: "#8b5cf6" },
+      { key: "conversion", label: "Conversion", color: "#22d3ee" },
+      { key: "authority", label: "Authority", color: "#22e39a" },
+    ];
+    const active = METRICS.find((m) => m.key === cmpSort) || METRICS[0];
+    const list = D.COMPETITORS.slice().sort((a, b) => b[cmpSort] - a[cmpSort]);
+    const avg = Math.round(list.reduce((a, c) => a + c[cmpSort], 0) / list.length);
     const top = list[0];
-    const vColor = (v) => (v >= 75 ? "#22e39a" : v >= 55 ? "#22d3ee" : v >= 35 ? "#a78bfa" : "#fb7185");
+    const tier = (v) => (v >= 75 ? "#22e39a" : v >= 55 ? "#22d3ee" : v >= 35 ? "#a78bfa" : "#fb7185");
     const roleColor = (r) => (/⚠️|NON COPIABILE|CONTROESEMPIO/i.test(r) ? "#fb7185" : /⭐|GOLD/.test(r) ? "#f0b23a" : "#8b5cf6");
-    const bar = (l, val, col) =>
-      `<div class="cscore"><span class="cscore-l">${l}</span><span class="cscore-track"><i style="width:${val}%;background:${col}"></i></span><b class="cscore-v">${val}</b></div>`;
 
     const cards = list.map((c, i) => {
       const rc = roleColor(c.role);
+      const bars = METRICS.map((m) =>
+        `<div class="cscore${m.key === cmpSort ? " active" : ""}"><span class="cscore-l">${m.label}</span><span class="cscore-track"><i style="width:${c[m.key]}%;background:${m.color}"></i></span><b class="cscore-v">${c[m.key]}</b></div>`
+      ).join("");
       return `<div class="card card-pad cmp-card">
         <div class="cmp-top">
           <div class="cmp-rank">#${i + 1}</div>
@@ -381,14 +390,10 @@
             <div class="cmp-handle">${escapeH(c.handle)}${c.verified ? ' <span class="cmp-verif">✔︎</span>' : ""}<span class="cmp-lang">${c.lang}</span></div>
             <div class="cmp-sub">${c.followers} follower · ${escapeH(c.frequency)}</div>
           </div>
-          <div class="vir-badge"><div class="n" style="color:${vColor(c.virality)}">${c.virality}</div><div class="l">Virality</div></div>
+          <div class="vir-badge"><div class="n" style="color:${tier(c[cmpSort])}">${c[cmpSort]}</div><div class="l">${active.label}</div></div>
         </div>
         <div class="cmp-role" style="background:${hexA(rc, 0.14)};color:${rc};border-color:${hexA(rc, 0.4)}">${escapeH(c.role)}</div>
-        <div class="cmp-scoregrid">
-          ${bar("Virality", c.virality, "#8b5cf6")}
-          ${bar("Conversion", c.conversion, "#22d3ee")}
-          ${bar("Authority", c.authority, "#22e39a")}
-        </div>
+        <div class="cmp-scoregrid">${bars}</div>
         <div class="cmp-note">${escapeH(c.note)}</div>
         <div class="cmp-row"><div class="k">Pattern</div><div class="v">${escapeH(c.pattern)}</div></div>
         <div class="cmp-row"><div class="k">Hook</div><div class="v">${c.hooks.map((h) => `"${escapeH(h)}"`).join(" · ")}</div></div>
@@ -400,13 +405,20 @@
       </div>`;
     }).join("");
 
+    const seg = METRICS.map((m) =>
+      `<button class="seg-btn${m.key === cmpSort ? " active" : ""}" data-cmpsort="${m.key}">${m.label}</button>`
+    ).join("");
+
     return `
-      <div class="grid kpi-grid-3" style="margin-bottom:20px">
-        <div class="kpi"><div class="label">Competitor analizzati</div><div class="value grad">${list.length}</div><div class="delta flat">dati reali</div></div>
-        <div class="kpi"><div class="label">Virality media</div><div class="value grad">${avg}</div><div class="delta flat">/100</div></div>
-        <div class="kpi"><div class="label">Più virale</div><div class="value grad" style="font-size:19px">${escapeH(top.handle)}</div><div class="delta up">▲ ${top.virality}</div></div>
+      <div class="grid kpi-grid-3" style="margin-bottom:18px">
+        <div class="kpi"><div class="label">Competitor analizzati</div><div class="value grad">${list.length}</div><div class="delta flat">dati reali · Apify</div></div>
+        <div class="kpi"><div class="label">Media ${active.label}</div><div class="value grad">${avg}</div><div class="delta flat">/100</div></div>
+        <div class="kpi"><div class="label">Top ${active.label}</div><div class="value grad" style="font-size:19px">${escapeH(top.handle)}</div><div class="delta up">▲ ${top[cmpSort]}</div></div>
       </div>
-      <div class="notice" style="margin-bottom:18px"><span class="ni">${window.icon("search")}</span><div>Analisi reale (Apify · 142 reel) dei competitor di riferimento, <b>ordinati per Virality score</b>. Nessuno è GOLD-first in italiano per principianti → è lo spazio di Persian FX.</div></div>
+      <div class="cmp-toolbar">
+        <span class="cmp-toolbar-l">Ordina per</span>
+        <div class="seg">${seg}</div>
+      </div>
       <div class="grid cmp-grid">${cards}</div>`;
   }
 
@@ -675,6 +687,12 @@
     if (routeId === "library") {
       c.querySelectorAll("[data-libfilter]").forEach((b) => b.addEventListener("click", () => {
         libFilter = b.dataset.libfilter; rerender();
+      }));
+    }
+
+    if (routeId === "competitor") {
+      c.querySelectorAll("[data-cmpsort]").forEach((b) => b.addEventListener("click", () => {
+        cmpSort = b.dataset.cmpsort; rerender();
       }));
     }
 

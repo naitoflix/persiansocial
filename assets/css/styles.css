@@ -393,6 +393,16 @@ table.tbl .row-title { color: var(--text); font-weight: 600; }
 .cscore-track { height: 7px; border-radius: 999px; background: var(--surface-hi); border: 1px solid var(--border); overflow: hidden; }
 .cscore-track i { display: block; height: 100%; border-radius: 999px; transition: width 0.5s ease; }
 .cscore-v { font-family: var(--font-head); font-weight: 700; font-size: 13px; text-align: right; color: var(--text); }
+.cscore.active .cscore-l { color: var(--text); font-weight: 700; }
+.cscore.active .cscore-track { box-shadow: 0 0 0 1px var(--border-hi); }
+/* Barra filtri competitor (segmented control) */
+.cmp-toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+.cmp-toolbar-l { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-mute); font-weight: 600; }
+.seg { display: inline-flex; gap: 4px; padding: 4px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface); backdrop-filter: blur(10px); }
+.seg-btn { padding: 8px 16px; border-radius: 9px; border: none; background: none; color: var(--text-dim); font-weight: 600; font-size: 13px; font-family: inherit; cursor: pointer; transition: color 0.15s ease, background 0.15s ease; }
+.seg-btn:hover { color: var(--text); }
+.seg-btn:active { transform: scale(0.97); }
+.seg-btn.active { background: var(--grad); color: #0a0714; box-shadow: 0 4px 14px -6px rgba(124, 92, 246, 0.6); }
 .cmp-note { font-size: 12.5px; color: var(--text-dim); font-style: italic; line-height: 1.4; padding: 9px 11px; border-radius: 10px; background: var(--surface-hi); border: 1px solid var(--border); margin-bottom: 12px; }
 .cmp-row { margin-bottom: 9px; min-width: 0; }
 .cmp-row .k { font-size: 10.5px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-mute); margin-bottom: 4px; }
