@@ -292,7 +292,7 @@ const SHOOTING = [
   {
     category: "Materiale grafico (editor)", icon: "palette",
     items: [
-      { id: "gr1", label: "Template testo animato (hook, karaoke subtitles)", done: false },
+      { id: "gr1", label: "Template testo animato (hook, sottotitoli)", done: false },
       { id: "gr2", label: "6 set slide carosello (1080×1350, palette scura/oro)", done: false },
       { id: "gr3", label: "Lower third con @iipersian", done: false },
       { id: "gr4", label: "Endcard 'gruppo gratuito – link in bio'", done: false },

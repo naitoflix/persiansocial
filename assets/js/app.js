@@ -292,17 +292,20 @@
 
     const groups = D.SHOOTING.map((g) => {
       const done = g.items.filter((it) => shootDone(it.id, it.done)).length;
+      const pct = Math.round((done / g.items.length) * 100);
+      const complete = done === g.items.length;
       const items = g.items.map((it) => {
         const dn = shootDone(it.id, it.done);
         return `<label class="check${dn ? " done" : ""}" data-shoot="${it.id}">
           <input type="checkbox" ${dn ? "checked" : ""}/>
-          <span class="box">✓</span>
+          <span class="box">${window.icon("check", 13)}</span>
           <span class="txt">${escapeH(it.label)}</span>
         </label>`;
       }).join("");
-      return `<div class="card card-pad shoot-group">
+      return `<div class="card card-pad shoot-group${complete ? " done" : ""}">
         <div class="shoot-head"><span class="ic">${window.icon(g.icon, 20)}</span><span class="name">${g.category}</span>
-          <span class="count">${done}/${g.items.length}</span></div>
+          <span class="count">${complete ? window.icon("check", 13) + " completo" : done + "/" + g.items.length}</span></div>
+        <div class="progress-line shoot-progress"><i style="width:${pct}%"></i></div>
         <div class="check-list">${items}</div>
       </div>`;
     }).join("");
@@ -339,11 +342,14 @@
       const s = statusMeta(statusOf(c.id));
       const m = c.metrics;
       const hasMetrics = m.views > 0;
+      const dateStr = new Date(c.date).toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" });
       return `<div class="card lib-card" data-content="${c.id}">
-        <div class="lib-thumb" style="background:linear-gradient(135deg, ${c.accent[0]}, ${c.accent[1]})">
-          <span class="badge badge-fmt fmt-tag" style="background:rgba(0,0,0,0.35);color:#fff;border-color:rgba(255,255,255,0.2)">${c.format}</span>
-          <span class="st-tag badge" style="background:${hexA(s.color, 0.9)};color:#0a0714;border:none"><span class="d" style="background:#0a0714"></span>${s.label}</span>
-          <span class="big-id">${c.id}</span>
+        <div class="lib-thumb">
+          <span class="st-tag badge" style="background:${hexA(s.color, 0.92)};color:#0a0714;border:none"><span class="d" style="background:#0a0714"></span>${s.label}</span>
+          <div class="lib-thumb-main">
+            <div class="lib-fmt">${c.format.toUpperCase()}</div>
+            <div class="lib-date">${dateStr}</div>
+          </div>
         </div>
         <div class="lib-body">
           <div class="lib-t">${escapeH(c.title)}</div>
@@ -371,9 +377,13 @@
       { key: "conversion", label: "Conversion", color: "#22d3ee" },
       { key: "authority", label: "Authority", color: "#22e39a" },
     ];
-    const active = METRICS.find((m) => m.key === cmpSort) || METRICS[0];
-    const list = D.COMPETITORS.slice().sort((a, b) => b[cmpSort] - a[cmpSort]);
-    const avg = Math.round(list.reduce((a, c) => a + c[cmpSort], 0) / list.length);
+    const RECOMMENDED = ["@xauusd.alantrader", "@coin.wise.inv", "@scotttaylorfx", "@casper_smc", "@huss.trades", "@cesco.fx", "@jorge_torresfx"];
+    const isRec = cmpSort === "recommended";
+    const sortKey = isRec ? "virality" : cmpSort;
+    const active = METRICS.find((m) => m.key === sortKey) || METRICS[0];
+    const list = (isRec ? D.COMPETITORS.filter((c) => RECOMMENDED.includes(c.handle)) : D.COMPETITORS.slice())
+      .sort((a, b) => b[sortKey] - a[sortKey]);
+    const avg = Math.round(list.reduce((a, c) => a + c[sortKey], 0) / list.length);
     const top = list[0];
     const tier = (v) => (v >= 75 ? "#22e39a" : v >= 55 ? "#22d3ee" : v >= 35 ? "#a78bfa" : "#fb7185");
     const roleColor = (r) => (/⚠️|NON COPIABILE|CONTROESEMPIO/i.test(r) ? "#fb7185" : /⭐|GOLD/.test(r) ? "#f0b23a" : "#8b5cf6");
@@ -381,16 +391,17 @@
     const cards = list.map((c, i) => {
       const rc = roleColor(c.role);
       const bars = METRICS.map((m) =>
-        `<div class="cscore${m.key === cmpSort ? " active" : ""}"><span class="cscore-l">${m.label}</span><span class="cscore-track"><i style="width:${c[m.key]}%;background:${m.color}"></i></span><b class="cscore-v">${c[m.key]}</b></div>`
+        `<div class="cscore${m.key === sortKey ? " active" : ""}"><span class="cscore-l">${m.label}</span><span class="cscore-track"><i style="width:${c[m.key]}%;background:${m.color}"></i></span><b class="cscore-v">${c[m.key]}</b></div>`
       ).join("");
+      const star = RECOMMENDED.includes(c.handle) ? ` <span class="cmp-star" title="Consigliato per Persian FX">${window.icon("sparkles", 13)}</span>` : "";
       return `<div class="card card-pad cmp-card">
         <div class="cmp-top">
           <div class="cmp-rank">#${i + 1}</div>
           <div class="grow" style="min-width:0">
-            <div class="cmp-handle">${escapeH(c.handle)}${c.verified ? ' <span class="cmp-verif">✔︎</span>' : ""}<span class="cmp-lang">${c.lang}</span></div>
+            <div class="cmp-handle">${escapeH(c.handle)}${c.verified ? ' <span class="cmp-verif">✔︎</span>' : ""}${star}<span class="cmp-lang">${c.lang}</span></div>
             <div class="cmp-sub">${c.followers} follower · ${escapeH(c.frequency)}</div>
           </div>
-          <div class="vir-badge"><div class="n" style="color:${tier(c[cmpSort])}">${c[cmpSort]}</div><div class="l">${active.label}</div></div>
+          <div class="vir-badge"><div class="n" style="color:${tier(c[sortKey])}">${c[sortKey]}</div><div class="l">${active.label}</div></div>
         </div>
         <div class="cmp-role" style="background:${hexA(rc, 0.14)};color:${rc};border-color:${hexA(rc, 0.4)}">${escapeH(c.role)}</div>
         <div class="cmp-scoregrid">${bars}</div>
@@ -411,13 +422,15 @@
 
     return `
       <div class="grid kpi-grid-3" style="margin-bottom:18px">
-        <div class="kpi"><div class="label">Competitor analizzati</div><div class="value grad">${list.length}</div><div class="delta flat">dati reali · Apify</div></div>
+        <div class="kpi"><div class="label">${isRec ? "Consigliati" : "Competitor analizzati"}</div><div class="value grad">${list.length}</div><div class="delta flat">${isRec ? "in linea con Persian FX" : "dati reali · Apify"}</div></div>
         <div class="kpi"><div class="label">Media ${active.label}</div><div class="value grad">${avg}</div><div class="delta flat">/100</div></div>
-        <div class="kpi"><div class="label">Top ${active.label}</div><div class="value grad" style="font-size:19px">${escapeH(top.handle)}</div><div class="delta up">▲ ${top[cmpSort]}</div></div>
+        <div class="kpi"><div class="label">Top ${active.label}</div><div class="value grad" style="font-size:19px">${escapeH(top.handle)}</div><div class="delta up">▲ ${top[sortKey]}</div></div>
       </div>
       <div class="cmp-toolbar">
         <span class="cmp-toolbar-l">Ordina per</span>
         <div class="seg">${seg}</div>
+        <button class="seg-rec${isRec ? " active" : ""}" data-cmpsort="recommended">${window.icon("sparkles", 14)} Consigliati</button>
+        ${isRec ? '<span class="cmp-rec-hint">I profili più in linea con Persian FX: GOLD/compliant · short-form · funnel Telegram</span>' : ""}
       </div>
       <div class="grid cmp-grid">${cards}</div>`;
   }
