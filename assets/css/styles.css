@@ -115,7 +115,9 @@ button { font-family: inherit; cursor: pointer; }
   border: 1px solid transparent; background: none; text-align: left; width: 100%;
   transition: all 0.18s ease;
 }
-.nav-item .ico { width: 20px; text-align: center; font-size: 16px; opacity: 0.9; }
+.nav-item .ico { width: 20px; flex: none; display: inline-flex; align-items: center; justify-content: center; opacity: 0.85; }
+.nav-item .ico svg { width: 18px; height: 18px; }
+.pfx-ico { display: block; }
 .nav-item:hover { color: var(--text); background: var(--surface-hi); }
 .nav-item.active {
   color: var(--text); background: var(--grad-soft);
@@ -331,7 +333,7 @@ table.tbl .row-title { color: var(--text); font-weight: 600; }
 /* ----------------------------- Shooting -------------------------------- */
 .shoot-group { margin-bottom: 8px; }
 .shoot-head { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.shoot-head .ic { font-size: 20px; }
+.shoot-head .ic { display: inline-flex; align-items: center; justify-content: center; color: var(--cyan-2); flex: none; }
 .shoot-head .name { font-family: var(--font-head); font-weight: 600; font-size: 16px; letter-spacing: 0.4px; }
 .shoot-head .count { font-size: 12px; color: var(--text-mute); margin-left: auto; }
 .check-list { display: flex; flex-direction: column; gap: 8px; }
@@ -412,7 +414,7 @@ table.tbl .row-title { color: var(--text); font-weight: 600; }
 .rep-block { margin-bottom: 16px; }
 .rep-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .rep-list li { display: flex; gap: 12px; align-items: flex-start; font-size: 13.5px; color: var(--text-dim); line-height: 1.45; }
-.rep-list li .mk { color: var(--cyan-2); font-weight: 700; flex: none; }
+.rep-list li .mk { color: var(--cyan-2); flex: none; display: inline-flex; align-items: center; padding-top: 1px; }
 .rep-two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .stat-row { display: flex; justify-content: space-between; padding: 11px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
 .stat-row:last-child { border-bottom: none; }
@@ -456,7 +458,8 @@ table.tbl .row-title { color: var(--text); font-weight: 600; }
   display: flex; gap: 12px; padding: 14px 16px; border-radius: 14px; font-size: 12.5px; line-height: 1.5;
   border: 1px solid var(--border); background: var(--surface-hi); color: var(--text-dim);
 }
-.notice .ni { font-size: 18px; flex: none; }
+.notice .ni { flex: none; color: var(--cyan-2); display: inline-flex; padding-top: 1px; }
+.notice .ni svg { width: 18px; height: 18px; }
 .notice.warn { border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.08); }
 .notice.warn .ni { color: var(--amber); }
 

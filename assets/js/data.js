@@ -247,7 +247,7 @@ CONTENT.push(C6);
  * ------------------------------------------------------------------ */
 const SHOOTING = [
   {
-    category: "Talking head (volto in camera)", icon: "🎙️",
+    category: "Talking head (volto in camera)", icon: "mic",
     items: [
       { id: "th1", label: "R1 — analisi giusta / problema eri tu (25-35s)", done: false },
       { id: "th2", label: "R2 — oro bene rifugio a metà (30-40s)", done: false },
@@ -259,7 +259,7 @@ const SHOOTING = [
     ],
   },
   {
-    category: "Screen recording (XAUUSD)", icon: "🖥️",
+    category: "Screen recording (XAUUSD)", icon: "monitor",
     items: [
       { id: "sr1", label: "R3 — lettura setup: struttura, zona, conferma", done: false },
       { id: "sr2", label: "R1 — grafico con zona/entrata segnata (b-roll)", done: false },
@@ -269,7 +269,7 @@ const SHOOTING = [
     ],
   },
   {
-    category: "B-roll lifestyle sobrio", icon: "🎬",
+    category: "B-roll lifestyle sobrio", icon: "film",
     items: [
       { id: "br1", label: "Caffè versato / tazza sulla scrivania", done: false },
       { id: "br2", label: "Mani alla tastiera / dito sul mouse (primi piani)", done: false },
@@ -282,7 +282,7 @@ const SHOOTING = [
     ],
   },
   {
-    category: "Voice over (audio pulito)", icon: "🔊",
+    category: "Voice over (audio pulito)", icon: "volume",
     items: [
       { id: "vo1", label: "VO di R3 (setup in 30s)", done: false },
       { id: "vo2", label: "VO di R4 (routine)", done: false },
@@ -290,7 +290,7 @@ const SHOOTING = [
     ],
   },
   {
-    category: "Materiale grafico (editor)", icon: "🎨",
+    category: "Materiale grafico (editor)", icon: "palette",
     items: [
       { id: "gr1", label: "Template testo animato (hook, karaoke subtitles)", done: false },
       { id: "gr2", label: "6 set slide carosello (1080×1350, palette scura/oro)", done: false },

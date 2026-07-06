@@ -74,14 +74,14 @@
 
   /* ------------------------------ Router -------------------------------- */
   const ROUTES = [
-    { id: "dashboard", label: "Dashboard", ico: "◆", render: viewDashboard },
-    { id: "calendario", label: "Calendario Editoriale", ico: "▦", render: viewCalendar },
-    { id: "shooting", label: "Shooting Planner", ico: "🎥", render: viewShooting },
-    { id: "library", label: "Content Library", ico: "▤", render: viewLibrary },
-    { id: "competitor", label: "Competitor Analysis", ico: "⚔", render: viewCompetitors },
-    { id: "analytics", label: "Analytics", ico: "📈", render: viewAnalytics },
-    { id: "telegram", label: "Telegram Tracking", ico: "✈", render: viewTelegram },
-    { id: "report", label: "Report", ico: "📄", render: viewReport },
+    { id: "dashboard", label: "Dashboard", ico: "dashboard", render: viewDashboard },
+    { id: "calendario", label: "Calendario Editoriale", ico: "calendar", render: viewCalendar },
+    { id: "shooting", label: "Shooting Planner", ico: "video", render: viewShooting },
+    { id: "library", label: "Content Library", ico: "library", render: viewLibrary },
+    { id: "competitor", label: "Competitor Analysis", ico: "target", render: viewCompetitors },
+    { id: "analytics", label: "Analytics", ico: "chart", render: viewAnalytics },
+    { id: "telegram", label: "Telegram Tracking", ico: "send", render: viewTelegram },
+    { id: "report", label: "Report", ico: "report", render: viewReport },
   ];
 
   function currentRoute() {
@@ -112,7 +112,7 @@
       return `<div class="kpi na">
         <div class="label">${k.label}</div>
         <div class="value" style="color:var(--text-mute);font-size:22px">N/D</div>
-        <div class="delta flat" title="${k.note || ''}"><span>🔒</span> ${k.note || "non disponibile"}</div>
+        <div class="delta flat" title="${k.note || ''}">${window.icon("lock", 12)} ${k.note || "non disponibile"}</div>
       </div>`;
     }
     const val = k.unit === "%" ? k.value.toFixed(1) + "%" : num(k.value);
@@ -157,7 +157,7 @@
     const hasReels = M.reels.length > 0;
 
     return `
-      <div class="notice" style="margin-bottom:16px"><span class="ni">📅</span>
+      <div class="notice" style="margin-bottom:16px"><span class="ni">${window.icon("calendar")}</span>
         <div>Statistiche <b>ultimo mese</b> · finestra <b>${fmtRange(M.from, M.to)}</b> (ultimi 30 giorni dall'ultimo contenuto pubblicato). Scorre in automatico quando escono nuovi contenuti.</div>
       </div>
 
@@ -301,7 +301,7 @@
         </label>`;
       }).join("");
       return `<div class="card card-pad shoot-group">
-        <div class="shoot-head"><span class="ic">${g.icon}</span><span class="name">${g.category}</span>
+        <div class="shoot-head"><span class="ic">${window.icon(g.icon, 20)}</span><span class="name">${g.category}</span>
           <span class="count">${done}/${g.items.length}</span></div>
         <div class="check-list">${items}</div>
       </div>`;
@@ -320,7 +320,7 @@
           </div>
         </div>
       </div>
-      <div class="notice" style="margin-bottom:18px"><span class="ni">💡</span>
+      <div class="notice" style="margin-bottom:18px"><span class="ni">${window.icon("bulb")}</span>
         <div>Registra tutto in blocco in un'unica giornata, poi si monta nel mese. Spunta ogni elemento man mano che lo giri — lo stato viene salvato in automatico.</div>
       </div>
       <div class="grid cols-2" style="align-items:start">${groups}</div>`;
@@ -406,7 +406,7 @@
         <div class="kpi"><div class="label">Virality media</div><div class="value grad">${avg}</div><div class="delta flat">/100</div></div>
         <div class="kpi"><div class="label">Più virale</div><div class="value grad" style="font-size:19px">${escapeH(top.handle)}</div><div class="delta up">▲ ${top.virality}</div></div>
       </div>
-      <div class="notice" style="margin-bottom:18px"><span class="ni">🔎</span><div>Analisi reale (Apify · 142 reel) dei competitor di riferimento, <b>ordinati per Virality score</b>. Nessuno è GOLD-first in italiano per principianti → è lo spazio di Persian FX.</div></div>
+      <div class="notice" style="margin-bottom:18px"><span class="ni">${window.icon("search")}</span><div>Analisi reale (Apify · 142 reel) dei competitor di riferimento, <b>ordinati per Virality score</b>. Nessuno è GOLD-first in italiano per principianti → è lo spazio di Persian FX.</div></div>
       <div class="grid cmp-grid">${cards}</div>`;
   }
 
@@ -415,7 +415,7 @@
     const p = D.IG_ANALYTICS.profile;
     const M = monthlyStats();
     const metric = (l, v, sub) => `<div class="kpi"><div class="label">${l}</div><div class="value grad">${v}</div>${sub ? `<div class="delta flat">${sub}</div>` : ""}</div>`;
-    const metricNA = (l) => `<div class="kpi na"><div class="label">${l}</div><div class="value" style="color:var(--text-mute);font-size:22px">N/D</div><div class="delta flat"><span>🔒</span> Meta API</div></div>`;
+    const metricNA = (l) => `<div class="kpi na"><div class="label">${l}</div><div class="value" style="color:var(--text-mute);font-size:22px">N/D</div><div class="delta flat">${window.icon("lock", 12)} Meta API</div></div>`;
 
     const tagColor = { trading: "#22e39a", opinion: "#22d3ee", lifestyle: "#a78bfa" };
     const rows = M.win.slice().reverse().map((r) => {
@@ -435,7 +435,7 @@
 
     return `
       <div class="card card-pad" style="margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-        <div class="cmp-avatar" style="width:52px;height:52px;font-size:22px">📸</div>
+        <div class="cmp-avatar" style="width:52px;height:52px;color:var(--cyan-2)">${window.icon("instagram", 24)}</div>
         <div><div style="font-weight:600;font-size:16px">${D.BRAND.igHandle} ${p.verified ? '<span style="color:var(--cyan-2)">✔︎</span>' : ""} <span class="muted" style="font-weight:400;font-size:13px">· ${escapeH(D.BRAND.igFullName)}</span></div>
           <div class="muted" style="font-size:12.5px"><a href="${D.BRAND.igUrl}" target="_blank" style="color:var(--cyan-2)">${D.BRAND.igUrl}</a></div></div>
         <div class="pill" style="margin-left:auto"><span class="dot"></span>Sync: ${D.IG_ANALYTICS.lastSync}</div>
@@ -474,7 +474,7 @@
         <div class="muted" style="font-size:12px;margin-top:10px">Finestra ultimi 30 giorni dall'ultimo post. Views/Play solo per i Reel (Instagram non li espone per i Caroselli). Reach, salvataggi, condivisioni e watch-time sono insight privati non scrapabili.</div>
       </div>
 
-      <div class="notice warn mt-lg"><span class="ni">🔌</span>
+      <div class="notice warn mt-lg"><span class="ni">${window.icon("zap")}</span>
         <div>Dati pubblici aggiornati al ${D.IG_ANALYTICS.lastSync}. Per gli <b>insight privati</b> (reach, impression, salvataggi, click al link in bio) serve collegare l'account a <b>Instagram Graph API</b> via login Meta (account Business/Creator).</div>
       </div>`;
   }
@@ -485,7 +485,7 @@
     const hist = Array.isArray(t.history) ? t.history : [];
     const hasHistory = hist.length >= 2;
     const metric = (l, v, sub, cls) => `<div class="kpi"><div class="label">${l}</div><div class="value grad">${v}</div><div class="delta ${cls || "flat"}">${sub || ""}</div></div>`;
-    const metricNA = (l) => `<div class="kpi na"><div class="label">${l}</div><div class="value" style="color:var(--text-mute);font-size:22px">N/D</div><div class="delta flat"><span>🔒</span> serve storico bot</div></div>`;
+    const metricNA = (l) => `<div class="kpi na"><div class="label">${l}</div><div class="value" style="color:var(--text-mute);font-size:22px">N/D</div><div class="delta flat">${window.icon("lock", 12)} serve storico bot</div></div>`;
 
     // deltas calcolati dallo storico reale del bot, se disponibile
     function deltaSince(days) {
@@ -514,12 +514,12 @@
          <div class="center" style="padding:26px 10px 6px">
            <div style="font-family:var(--font-head);font-weight:700;font-size:46px" class="value grad">${num(t.current)}</div>
            <div class="muted" style="font-size:13px;margin-top:2px">iscritti reali · lo storico si popola quando gira il bot</div>
-           <div class="notice" style="margin:18px auto 0;max-width:600px;text-align:left"><span class="ni">🤖</span><div>Avvia il <b>bot amministratore</b> (<code>telegram-bot/persian-tg-bot.ps1</code>) per popolare automaticamente questo grafico giorno-per-giorno. Istruzioni in <b>telegram-bot/README.md</b>.</div></div>
+           <div class="notice" style="margin:18px auto 0;max-width:600px;text-align:left"><span class="ni">${window.icon("bot")}</span><div>Avvia il <b>bot amministratore</b> (<code>telegram-bot/persian-tg-bot.ps1</code>) per popolare automaticamente questo grafico giorno-per-giorno. Istruzioni in <b>telegram-bot/README.md</b>.</div></div>
          </div>`;
 
     return `
       <div class="card card-pad" style="margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-        <div class="cmp-avatar" style="width:52px;height:52px;font-size:22px">✈️</div>
+        <div class="cmp-avatar" style="width:52px;height:52px;color:var(--cyan-2)">${window.icon("send", 24)}</div>
         <div><div style="font-weight:600;font-size:16px">${escapeH(t.title || D.BRAND.telegramLabel)}</div>
           <div class="muted" style="font-size:12.5px"><a href="${t.link}" target="_blank" style="color:var(--cyan-2)">${t.link}</a></div></div>
         <a class="btn" href="${t.link}" target="_blank" style="margin-left:auto">Apri gruppo ↗</a>
@@ -543,7 +543,7 @@
         <div class="muted" style="font-size:12px;margin-top:10px">Obiettivo: individuare quali contenuti generano il maggior numero di ingressi nel gruppo.</div>
       </div>
 
-      <div class="notice warn mt-lg"><span class="ni">⚙️</span><div>${escapeH(t.note)}</div></div>`;
+      <div class="notice warn mt-lg"><span class="ni">${window.icon("gear")}</span><div>${escapeH(t.note)}</div></div>`;
   }
 
   /* -- Report ------------------------------------------------------------ */
@@ -572,16 +572,16 @@
 
         <div class="card card-pad">
           <div class="section-title"><span class="bar"></span>Suggerimenti Agent FX</div>
-          <ul class="rep-list">${s.agentTips.map((t) => `<li><span class="mk">▹</span><span>${escapeH(t)}</span></li>`).join("")}</ul>
+          <ul class="rep-list">${s.agentTips.map((t) => `<li><span class="mk">${window.icon("chevronRight", 14)}</span><span>${escapeH(t)}</span></li>`).join("")}</ul>
         </div>
       </div>
 
       <div class="card card-pad mt-lg">
         <div class="section-title"><span class="bar"></span>Nuove idee da testare</div>
-        <ul class="rep-list">${s.newIdeas.map((t) => `<li><span class="mk">✦</span><span>${escapeH(t)}</span></li>`).join("")}</ul>
+        <ul class="rep-list">${s.newIdeas.map((t) => `<li><span class="mk">${window.icon("sparkles", 14)}</span><span>${escapeH(t)}</span></li>`).join("")}</ul>
       </div>
 
-      <div class="notice mt-lg"><span class="ni">🧠</span><div>Il report viene generato in automatico incrociando le metriche Instagram, gli ingressi Telegram e lo stato dei contenuti. Con i dati live, best/worst Reel e la conversione si aggiornano ad ogni sync.</div></div>`;
+      <div class="notice mt-lg"><span class="ni">${window.icon("bulb")}</span><div>Il report viene generato in automatico incrociando le metriche Instagram, gli ingressi Telegram e lo stato dei contenuti. Con i dati live, best/worst Reel e la conversione si aggiornano ad ogni sync.</div></div>`;
   }
 
   /* ========================= Modal contenuto =========================== */
@@ -603,9 +603,9 @@
             <div class="m-id">${c.id} · ${c.format.toUpperCase()}</div>
             <div class="m-title">${escapeH(c.title)}</div>
             <div class="modal-tags">
-              ${c.objective.map((o) => `<span class="badge" style="background:rgba(0,0,0,0.3);color:#fff;border-color:rgba(255,255,255,0.2)">🎯 ${o}</span>`).join("")}
-              <span class="badge" style="background:rgba(0,0,0,0.3);color:#fff;border-color:rgba(255,255,255,0.2)">📅 ${new Date(c.date).toLocaleDateString("it-IT", { day: "2-digit", month: "long" })}</span>
-              <span class="badge" style="background:rgba(0,0,0,0.3);color:#fff;border-color:rgba(255,255,255,0.2)">📱 ${c.platform}</span>
+              ${c.objective.map((o) => `<span class="badge" style="background:rgba(0,0,0,0.3);color:#fff;border-color:rgba(255,255,255,0.2)">${window.icon("target", 12)} ${o}</span>`).join("")}
+              <span class="badge" style="background:rgba(0,0,0,0.3);color:#fff;border-color:rgba(255,255,255,0.2)">${window.icon("calendar", 12)} ${new Date(c.date).toLocaleDateString("it-IT", { day: "2-digit", month: "long" })}</span>
+              <span class="badge" style="background:rgba(0,0,0,0.3);color:#fff;border-color:rgba(255,255,255,0.2)">${window.icon("smartphone", 12)} ${c.platform}</span>
             </div>
           </div>
           <div class="modal-body">
@@ -623,7 +623,7 @@
                 ${metricBox(fmt(m.comments), "Commenti")}${metricBox(fmt(m.shares), "Cond.")}
                 ${metricBox(fmt(m.saves), "Salvataggi")}${metricBox(fmt(m.reach), "Reach")}
                 ${metricBox(m.engagement + "%", "Engagement")}${metricBox(c.platform === "Meta Ads" ? "ADV" : c.format, "Formato")}
-              </div></div>` : `<div class="notice"><span class="ni">⏳</span><div>Contenuto non ancora pubblicato — le metriche compariranno dopo la pubblicazione e il primo sync.</div></div>`}
+              </div></div>` : `<div class="notice"><span class="ni">${window.icon("info")}</span><div>Contenuto non ancora pubblicato — le metriche compariranno dopo la pubblicazione e il primo sync.</div></div>`}
           </div>
         </div>
       </div>`;
@@ -724,7 +724,7 @@
   /* ============================ Init ================================= */
   function buildNav() {
     $("#nav").innerHTML = ROUTES.map((r) =>
-      `<button class="nav-item" data-route="${r.id}" onclick="location.hash='#/${r.id}'"><span class="ico">${r.ico}</span>${r.label}</button>`
+      `<button class="nav-item" data-route="${r.id}" onclick="location.hash='#/${r.id}'"><span class="ico">${window.icon(r.ico)}</span>${r.label}</button>`
     ).join("");
   }
 
