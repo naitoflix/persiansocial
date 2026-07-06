@@ -92,7 +92,7 @@
   function router() {
     const r = currentRoute();
     $("#pageTitle").textContent = r.label;
-    $("#pageSub").textContent = `${D.BRAND.name} · ${D.BRAND.niche} · ${D.BRAND.campaign}`;
+    $("#pageSub").textContent = "";
     document.querySelectorAll(".nav-item").forEach((n) =>
       n.classList.toggle("active", n.dataset.route === r.id)
     );
@@ -265,9 +265,10 @@
       const isToday = today.getFullYear() === calYear && today.getMonth() === calMonth && today.getDate() === d;
       const events = (byDate[dateStr] || []).map((c) => {
         const s = statusMeta(statusOf(c.id));
-        return `<div class="cal-event" data-content="${c.id}" style="border-left-color:${s.color}">
-          <span class="ev-t">${c.id} · ${escapeH(c.title)}</span>
-          <span class="ev-m"><span class="d badge" style="width:6px;height:6px;padding:0;background:${s.color}"></span>${c.format}</span>
+        return `<div class="cal-event" data-content="${c.id}" style="--st:${s.color}">
+          <span class="ev-id">${c.id}</span>
+          <span class="ev-t">${escapeH(c.title)}</span>
+          <span class="ev-m">${c.format}</span>
         </div>`;
       }).join("");
       cells += `<div class="cal-cell${isToday ? " today" : ""}"><div class="cal-date">${d}</div>${events}</div>`;
