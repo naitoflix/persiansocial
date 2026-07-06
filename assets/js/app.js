@@ -447,7 +447,7 @@
 
     return `
       <div class="card card-pad" style="margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
-        <div class="cmp-avatar" style="width:52px;height:52px;color:var(--cyan-2)">${window.icon("instagram", 24)}</div>
+        <div class="cmp-avatar" style="width:52px;height:52px;color:var(--cyan-2)"><img class="ig-pic" src="assets/img/iipersian.jpg" alt="@iipersian" onerror="this.remove()"/>${window.icon("instagram", 24)}</div>
         <div><div style="font-weight:600;font-size:16px">${D.BRAND.igHandle} ${p.verified ? '<span style="color:var(--cyan-2)">✔︎</span>' : ""} <span class="muted" style="font-weight:400;font-size:13px">· ${escapeH(D.BRAND.igFullName)}</span></div>
           <div class="muted" style="font-size:12.5px"><a href="${D.BRAND.igUrl}" target="_blank" style="color:var(--cyan-2)">${D.BRAND.igUrl}</a></div></div>
         <div class="pill" style="margin-left:auto"><span class="dot"></span>Sync: ${D.IG_ANALYTICS.lastSync}</div>

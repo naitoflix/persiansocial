@@ -379,6 +379,12 @@ table.tbl .row-title { color: var(--text); font-weight: 600; }
   border: 1px solid var(--border); display: grid; place-items: center;
   font-family: var(--font-head); font-weight: 700; font-size: 14px; color: var(--text);
 }
+/* Avatar sezione (Analytics/Telegram) — supporta foto profilo o icona */
+.cmp-avatar {
+  border-radius: 13px; flex: none; background: var(--grad-soft); border: 1px solid var(--border);
+  display: grid; place-items: center; position: relative; overflow: hidden;
+}
+.cmp-avatar .ig-pic { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .cmp-handle { font-weight: 600; font-size: 14.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .cmp-verif { color: var(--cyan-2); }
 .cmp-lang { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; color: var(--text-mute); border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px; margin-left: 6px; }

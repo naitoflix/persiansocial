@@ -352,6 +352,14 @@ const COMPETITORS = [
     types: ["Copy trade + gimmick lotteria 'XAULOT'"], pattern: "Sorteo/pozo + hashtag copy/telegram",
     hooks: ["XAULOT, el pozo está en 63 $GRAM"], cta: "Copy trade + Telegram",
     replicate: ["Nulla (il funnel copy+Telegram è on-model ma non performa)"], exclude: ["Reach debole (51-1.009 plays)", "Gimmick lotteria"], note: "Funnel giusto sulla carta, esecuzione e reach deboli." },
+  { id: "cmp13", handle: "@lorenzocorradofx", role: "AUTHORITY · Futures/SMC", virality: 44, conversion: 55, authority: 74, followers: "87.5k", verified: true, frequency: "quotidiana (live NY)", lang: "EN",
+    types: ["Educativo SMC 41-67s", "COT / smart money"], pattern: "Concetti istituzionali (COT data, smart money, key levels, demand zone) su screen",
+    hooks: ["Institutions don't trade the way you've been taught (COT data)", "Most traders enter too early — watch this"], cta: "FREE LTA E-Book (link in bio) + Live Day Trading NY",
+    replicate: ["Angolo 'smart money/istituzionale' che dà autorevolezza", "Lead magnet gratuito (e-book) come funnel"], exclude: ["Reel 41-67s + gergo COT/istituzionale: barriera per principianti, reach schiacciata su 87k follower"], note: "87,5k follower ma reach modesta (best 14k views): tecnico-avanzato e reel lunghi. Autorevole, non virale." },
+  { id: "cmp14", handle: "@jorge_torresfx", role: "🇲🇽 MINDSET · GOLD-adjacent", virality: 28, conversion: 48, authority: 55, followers: "5.2k", verified: false, frequency: "quotidiana", lang: "ES",
+    types: ["XAUUSD 3M short-form", "Psicologia / storytelling"], pattern: "XAUUSD short-form (19-25s) + mindset motivazionale, tono compliant ('no prometemos ganancias')",
+    hooks: ["Nadie te habla de esto cuando empiezas (psicologia)", "XAU/USD: tu trabajo no es adivinar, es adaptarte"], cta: "Mentoría Método M35 (compliant)",
+    replicate: ["Mix XAUUSD short-form + mindset emotivo (alta identificazione)", "Tono compliant 'insegniamo il processo, non promettiamo guadagni'"], exclude: ["Account piccolo (5k) e spagnolo: reach bassa", "Qualche reel lungo (61s) che affossa la reach"], note: "Piccolo (5k) ma on-model: XAUUSD short-form + psicologia, in modo compliant. Buon esempio di TONO, non di reach." },
 ];
 
 /* ------------------------------------------------------------------ *
