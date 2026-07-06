@@ -364,34 +364,50 @@
 
   /* -- Competitor Analysis ----------------------------------------------- */
   function viewCompetitors() {
-    const avg = Math.round(D.COMPETITORS.reduce((a, c) => a + c.virality, 0) / D.COMPETITORS.length);
-    const cards = D.COMPETITORS.map((c) => {
-      const vColor = c.virality >= 75 ? "#22e39a" : c.virality >= 65 ? "#22d3ee" : "#a78bfa";
+    const list = D.COMPETITORS.slice().sort((a, b) => b.virality - a.virality); // sempre per Virality
+    const avg = Math.round(list.reduce((a, c) => a + c.virality, 0) / list.length);
+    const top = list[0];
+    const vColor = (v) => (v >= 75 ? "#22e39a" : v >= 55 ? "#22d3ee" : v >= 35 ? "#a78bfa" : "#fb7185");
+    const roleColor = (r) => (/⚠️|NON COPIABILE|CONTROESEMPIO/i.test(r) ? "#fb7185" : /⭐|GOLD/.test(r) ? "#f0b23a" : "#8b5cf6");
+    const bar = (l, val, col) =>
+      `<div class="cscore"><span class="cscore-l">${l}</span><span class="cscore-track"><i style="width:${val}%;background:${col}"></i></span><b class="cscore-v">${val}</b></div>`;
+
+    const cards = list.map((c, i) => {
+      const rc = roleColor(c.role);
       return `<div class="card card-pad cmp-card">
         <div class="cmp-top">
-          <div class="cmp-avatar">🏆</div>
-          <div><div class="cmp-handle">${escapeH(c.handle)}</div><div class="cmp-sub">${c.followers} follower · ${c.frequency}</div></div>
-          <div class="vir-badge"><div class="n" style="color:${vColor}">${c.virality}</div><div class="l">Virality</div></div>
+          <div class="cmp-rank">#${i + 1}</div>
+          <div class="grow" style="min-width:0">
+            <div class="cmp-handle">${escapeH(c.handle)}${c.verified ? ' <span class="cmp-verif">✔︎</span>' : ""}<span class="cmp-lang">${c.lang}</span></div>
+            <div class="cmp-sub">${c.followers} follower · ${escapeH(c.frequency)}</div>
+          </div>
+          <div class="vir-badge"><div class="n" style="color:${vColor(c.virality)}">${c.virality}</div><div class="l">Virality</div></div>
         </div>
-        <div class="cmp-row"><div class="k">Tipologia contenuti</div><div class="tag-row">${c.types.map((t) => `<span class="chip">${escapeH(t)}</span>`).join("")}</div></div>
+        <div class="cmp-role" style="background:${hexA(rc, 0.14)};color:${rc};border-color:${hexA(rc, 0.4)}">${escapeH(c.role)}</div>
+        <div class="cmp-scoregrid">
+          ${bar("Virality", c.virality, "#8b5cf6")}
+          ${bar("Conversion", c.conversion, "#22d3ee")}
+          ${bar("Authority", c.authority, "#22e39a")}
+        </div>
+        <div class="cmp-note">${escapeH(c.note)}</div>
         <div class="cmp-row"><div class="k">Pattern</div><div class="v">${escapeH(c.pattern)}</div></div>
-        <div class="cmp-row"><div class="k">Hook principali</div><div class="v">${c.hooks.map((h) => `"${escapeH(h)}"`).join(" · ")}</div></div>
+        <div class="cmp-row"><div class="k">Hook</div><div class="v">${c.hooks.map((h) => `"${escapeH(h)}"`).join(" · ")}</div></div>
         <div class="cmp-row"><div class="k">CTA</div><div class="v">${escapeH(c.cta)}</div></div>
         <div class="cmp-cols">
-          <div class="col repl"><div class="k">✓ Idee da replicare</div><ul>${c.replicate.map((r) => `<li>${escapeH(r)}</li>`).join("")}</ul></div>
-          <div class="col excl"><div class="k">✕ Idee escluse</div><ul>${c.exclude.map((r) => `<li>${escapeH(r)}</li>`).join("")}</ul></div>
+          <div class="col repl"><div class="k">✓ Da replicare</div><ul>${c.replicate.map((r) => `<li>${escapeH(r)}</li>`).join("")}</ul></div>
+          <div class="col excl"><div class="k">✕ Da escludere</div><ul>${c.exclude.map((r) => `<li>${escapeH(r)}</li>`).join("")}</ul></div>
         </div>
       </div>`;
     }).join("");
 
     return `
       <div class="grid kpi-grid-3" style="margin-bottom:20px">
-        <div class="kpi"><div class="label">Competitor analizzati</div><div class="value grad">${D.COMPETITORS.length}</div><div class="delta flat">profili monitorati</div></div>
+        <div class="kpi"><div class="label">Competitor analizzati</div><div class="value grad">${list.length}</div><div class="delta flat">dati reali</div></div>
         <div class="kpi"><div class="label">Virality media</div><div class="value grad">${avg}</div><div class="delta flat">/100</div></div>
-        <div class="kpi"><div class="label">Top performer</div><div class="value grad" style="font-size:20px">${escapeH(D.COMPETITORS.slice().sort((a, b) => b.virality - a.virality)[0].handle)}</div><div class="delta up">▲ ${D.COMPETITORS.slice().sort((a, b) => b.virality - a.virality)[0].virality}</div></div>
+        <div class="kpi"><div class="label">Più virale</div><div class="value grad" style="font-size:19px">${escapeH(top.handle)}</div><div class="delta up">▲ ${top.virality}</div></div>
       </div>
-      <div class="notice" style="margin-bottom:18px"><span class="ni">🔎</span><div>Teardown provvisori pronti per l'analisi reale. Con i dati live, i punteggi Virality e i pattern vengono ricalcolati sui 9 competitor.</div></div>
-      <div class="grid cmp-grid" style="align-items:start">${cards}</div>`;
+      <div class="notice" style="margin-bottom:18px"><span class="ni">🔎</span><div>Analisi reale (Apify · 142 reel) dei competitor di riferimento, <b>ordinati per Virality score</b>. Nessuno è GOLD-first in italiano per principianti → è lo spazio di Persian FX.</div></div>
+      <div class="grid cmp-grid">${cards}</div>`;
   }
 
   /* -- Analytics --------------------------------------------------------- */
