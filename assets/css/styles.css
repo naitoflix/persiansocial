@@ -417,6 +417,12 @@ table.tbl .row-title { color: var(--text); font-weight: 600; }
   background-size: cover; background-position: center;
 }
 .lib-thumb .st-tag { position: absolute; top: 12px; right: 12px; }
+.lib-focus { position: absolute; top: 12px; left: 12px; display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700; letter-spacing: 0.4px; padding: 3px 8px; border-radius: 999px;
+  color: #0a0714; background: rgba(255,255,255,0.9); }
+.lib-focus .pfx-ico { width: 11px; height: 11px; }
+.lib-focus.reach { background: #3ce0ff; }
+.lib-focus.conv { background: #b79bff; }
 .lib-thumb-main { position: relative; }
 .lib-fmt { font-family: var(--font-head); font-weight: 700; font-size: 22px; letter-spacing: 1.5px; color: #fff; line-height: 1; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.4); }
 .lib-date { font-size: 12px; color: rgba(255, 255, 255, 0.75); margin-top: 4px; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.4); }

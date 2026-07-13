@@ -420,6 +420,7 @@
             <div class="lib-fmt">${c.format.toUpperCase()}</div>
             <div class="lib-date">${dateStr}</div>
           </div>
+          ${c.focus ? `<span class="lib-focus ${c.focus === "Reach" ? "reach" : "conv"}">${window.icon(c.focus === "Reach" ? "zap" : "target", 11)} ${escapeH(c.focus)}</span>` : ""}
         </div>
         <div class="lib-body">
           <div class="lib-t">${escapeH(c.title)}</div>
@@ -698,6 +699,7 @@
             <div class="m-id">${c.id} · ${c.format.toUpperCase()}</div>
             <div class="m-title">${escapeH(c.title)}</div>
             <div class="modal-tags">
+              ${c.focus ? `<span class="badge" style="background:#0a0714;color:#fff;border-color:rgba(255,255,255,0.35)">${window.icon(c.focus === "Reach" ? "zap" : "target", 12)} Focus: ${escapeH(c.focus)}</span>` : ""}
               ${c.objective.map((o) => `<span class="badge" style="background:rgba(0,0,0,0.3);color:#fff;border-color:rgba(255,255,255,0.2)">${window.icon("target", 12)} ${o}</span>`).join("")}
               <span class="badge" style="background:rgba(0,0,0,0.3);color:#fff;border-color:rgba(255,255,255,0.2)">${window.icon("calendar", 12)} ${new Date(c.date).toLocaleDateString("it-IT", { day: "2-digit", month: "long" })}</span>
               <span class="badge" style="background:rgba(0,0,0,0.3);color:#fff;border-color:rgba(255,255,255,0.2)">${window.icon("smartphone", 12)} ${c.platform}</span>
