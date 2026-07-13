@@ -448,7 +448,7 @@
       { key: "conversion", label: "Conversion", color: "#22d3ee" },
       { key: "authority", label: "Authority", color: "#22e39a" },
     ];
-    const RECOMMENDED = ["@xauusd.alantrader", "@gold_trader_su", "@coin.wise.inv", "@scotttaylorfx", "@casper_smc", "@huss.trades", "@cesco.fx", "@jorge_torresfx"];
+    const RECOMMENDED = ["@xauusd.alantrader", "@gold_trader_su", "@persaxu", "@coin.wise.inv", "@scotttaylorfx", "@casper_smc", "@huss.trades", "@cesco.fx", "@jorge_torresfx"];
     const isRec = cmpSort === "recommended";
     const sortKey = isRec ? "virality" : cmpSort;
     const active = METRICS.find((m) => m.key === sortKey) || METRICS[0];
