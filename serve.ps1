@@ -21,6 +21,9 @@ try {
       $res = $ctx.Response
       $res.KeepAlive = $false
       $res.Headers.Add("Connection", "close")
+      # Niente cache: il browser deve sempre ricaricare JS/CSS aggiornati (evita di vedere versioni vecchie)
+      $res.Headers.Add("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0")
+      $res.Headers.Add("Pragma", "no-cache")
       $path = [System.Uri]::UnescapeDataString($req.Url.AbsolutePath)
       if ($path -eq "/") { $path = "/index.html" }
       $file = Join-Path $root ($path.TrimStart("/") -replace "/", "\")

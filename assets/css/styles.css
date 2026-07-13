@@ -188,8 +188,8 @@ button { font-family: inherit; cursor: pointer; }
   transition: color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
 }
 .theme-toggle::before, .menu-btn::before {
-  content: ""; position: absolute; inset: 0 0 auto 0; height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(60, 224, 255, 0.45), transparent); opacity: 0.6;
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 1px; z-index: 1;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent); opacity: 0.6;
 }
 .theme-toggle:hover, .menu-btn:hover { color: var(--text); border-color: var(--border-hi); box-shadow: var(--glow); }
 .theme-toggle:active, .menu-btn:active { transform: scale(0.94); }
@@ -358,6 +358,40 @@ table.tbl .row-title { color: var(--text); font-weight: 600; }
 .check.done .box { background: var(--grad); border-color: transparent; color: #0a0714; }
 .check .txt { font-size: 13.5px; color: var(--text-dim); transition: all 0.15s ease; }
 .check.done .txt { color: var(--text-mute); text-decoration: line-through; }
+.shoot-item { display: flex; flex-direction: column; cursor: pointer; }
+.shoot-item:hover .check { border-color: var(--border-hi); }
+.shoot-item:hover .shoot-open-ic { color: var(--cyan-2); transform: translateX(2px); }
+.check .box { cursor: pointer; }
+.check .box:hover { border-color: var(--violet); }
+.check .box:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.5); }
+.shoot-open-ic { margin-left: auto; flex: none; display: inline-flex; color: var(--text-mute); transition: color 0.15s ease, transform 0.15s ease; }
+.shoot-script {
+  margin: 7px 0 2px 34px; padding: 10px 13px; border-radius: 10px;
+  border: 1px solid var(--border); border-left: 3px solid var(--violet);
+  background: var(--surface-hi); color: var(--text-dim); font-size: 12.5px; line-height: 1.55;
+}
+.shoot-script-k {
+  display: block; font-size: 9.5px; letter-spacing: 1.2px; text-transform: uppercase;
+  color: var(--text-mute); font-weight: 700; margin-bottom: 4px;
+}
+.shoot-edited { color: var(--cyan-2); font-style: normal; }
+.shoot-item.done .shoot-script { opacity: 0.55; }
+@media (max-width: 480px) { .shoot-script { margin-left: 0; } }
+
+/* Modale shooting: script editabile */
+.m-check { display: inline-flex; align-items: center; gap: 9px; cursor: pointer; font-size: 13.5px; color: var(--text); font-weight: 600; }
+.m-check input { width: 17px; height: 17px; accent-color: var(--violet); cursor: pointer; }
+.m-script {
+  width: 100%; min-height: 150px; resize: vertical; padding: 12px 14px; border-radius: 11px;
+  border: 1px solid var(--border); background: var(--surface-hi); color: var(--text);
+  font-family: inherit; font-size: 13.5px; line-height: 1.6;
+}
+.m-script:focus { outline: none; border-color: var(--border-hi); box-shadow: var(--glow); }
+.m-script-hint { display: flex; align-items: center; gap: 6px; margin-top: 7px; font-size: 11.5px; color: var(--text-mute); }
+.m-script-hint .pfx-ico { flex: none; }
+.m-edit-flag { color: var(--cyan-2); font-weight: 600; }
+.m-reset { background: none; border: none; padding: 0; margin-left: 2px; font: inherit; font-size: 11.5px; color: var(--cyan-2); cursor: pointer; text-decoration: underline; }
+.m-reset:hover { color: var(--text); }
 
 .progress-line { height: 8px; border-radius: 999px; background: var(--surface-hi); overflow: hidden; border: 1px solid var(--border); }
 .progress-line > i { display: block; height: 100%; background: var(--grad); border-radius: 999px; transition: width 0.4s ease; }
@@ -439,8 +473,32 @@ table.tbl .row-title { color: var(--text); font-weight: 600; }
 .cmp-cols .col .k { font-size: 10.5px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-mute); font-weight: 600; }
 .cmp-cols ul { list-style: none; margin-top: 6px; display: flex; flex-direction: column; gap: 5px; }
 .cmp-cols li { font-size: 12px; color: var(--text-dim); padding-left: 14px; position: relative; line-height: 1.35; overflow-wrap: anywhere; }
-.cmp-cols .repl li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
-.cmp-cols .excl li::before { content: "✕"; position: absolute; left: 0; color: var(--red); font-weight: 700; }
+.cmp-cols li::before {
+  content: ""; position: absolute; left: 0; top: 0.2em; width: 12px; height: 12px;
+  -webkit-mask-position: center; mask-position: center; -webkit-mask-size: contain; mask-size: contain;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+.cmp-cols .repl li::before { background-color: var(--green);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E"); }
+.cmp-cols .excl li::before { background-color: var(--red);
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 6 6 18M6 6l12 12'/%3E%3C/svg%3E"); }
+
+/* Icone inline: chip ruolo, badge verificato, chip paese, header colonne, bottoni */
+.cmp-role { display: inline-flex; align-items: center; gap: 5px; }
+.cmp-role-ic { display: inline-flex; }
+.cmp-role .pfx-ico { width: 12px; height: 12px; }
+.cmp-verif { color: var(--cyan-2); display: inline-flex; vertical-align: -2px; }
+.cmp-country { display: inline-flex; align-items: center; gap: 3px; font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+  color: var(--cyan-2); border: 1px solid var(--border); border-radius: 5px; padding: 1px 5px; margin-left: 6px; }
+.cmp-country .pfx-ico { width: 10px; height: 10px; }
+.cmp-cols .col .k { display: inline-flex; align-items: center; gap: 5px; }
+.cmp-cols .col .k .pfx-ico { width: 13px; height: 13px; }
+.cmp-cols .repl .k .pfx-ico { color: var(--green); }
+.cmp-cols .excl .k .pfx-ico { color: var(--red); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+.btn .pfx-ico { width: 15px; height: 15px; }
 @media (max-width: 480px) { .cmp-cols { grid-template-columns: 1fr; } }
 
 /* ----------------------------- Report ---------------------------------- */
@@ -469,9 +527,13 @@ table.tbl .row-title { color: var(--text); font-weight: 600; }
 }
 .modal-hero { padding: 24px 26px; position: relative; }
 .modal-hero .close {
-  position: absolute; top: 16px; right: 16px; width: 34px; height: 34px; border-radius: 10px;
-  border: 1px solid rgba(255,255,255,0.25); background: rgba(0,0,0,0.25); color: #fff; font-size: 18px;
+  position: absolute; top: 16px; right: 16px; width: 36px; height: 36px; border-radius: 10px;
+  display: grid; place-items: center; padding: 0; line-height: 0; cursor: pointer; z-index: 2;
+  border: 1px solid rgba(255,255,255,0.25); background: rgba(0,0,0,0.28); color: #fff;
 }
+.modal-hero .close svg { width: 18px; height: 18px; display: block; pointer-events: none; }
+.modal-hero .close:hover { background: rgba(0,0,0,0.42); border-color: rgba(255,255,255,0.45); }
+.modal-hero .close:active { transform: scale(0.9); }
 .modal-hero .m-id { font-family: var(--font-head); font-weight: 700; font-size: 13px; letter-spacing: 2px; opacity: 0.8; color: #0a0714; }
 .modal-hero .m-title { font-family: var(--font-head); font-weight: 700; font-size: 24px; color: #0a0714; margin-top: 4px; line-height: 1.15; }
 .modal-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
@@ -634,3 +696,74 @@ html.pfx-locked .app { display: none; }
 }
 .menu-btn { display: none; }
 .menu-btn svg { display: block; }
+
+/* ============================================================ *
+ *  Liquid glass — interazione bottoni (hover sheen · press     *
+ *  elastico · stato attivo VIOLA senza ciano · focus viola)    *
+ * ============================================================ */
+:root {
+  --ease-glass: cubic-bezier(0.33, 0.9, 0.28, 1);
+  --spring-press: cubic-bezier(0.34, 1.7, 0.5, 1);
+  /* Stato attivo/selezionato: viola pieno, nessuna traccia di ciano */
+  --btn-active-bg: linear-gradient(135deg, #9b6cff 0%, #7c3aed 100%);
+  --btn-active-sh: 0 8px 22px -10px rgba(124, 92, 246, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -7px 16px -9px rgba(76, 20, 150, 0.55);
+}
+
+/* Superficie interattiva + transizioni morbide/elastiche */
+.btn, .btn-icon, .seg-btn, .seg-rec, .report-tab, .theme-toggle, .menu-btn, #login-form button {
+  position: relative; overflow: hidden; isolation: isolate;
+  transition:
+    transform 0.24s var(--spring-press),
+    box-shadow 0.28s var(--ease-glass),
+    border-color 0.24s var(--ease-glass),
+    background 0.28s var(--ease-glass),
+    color 0.2s ease, filter 0.2s ease;
+}
+
+/* Sheen liquido che attraversa il bottone all'hover */
+.btn::after, .btn-icon::after, .seg-btn::after, .seg-rec::after,
+.report-tab::after, .theme-toggle::after, .menu-btn::after, #login-form button::after {
+  content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(115deg, transparent 25%, rgba(255, 255, 255, 0.24) 46%,
+    rgba(255, 255, 255, 0.06) 54%, transparent 72%);
+  transform: translateX(-135%); opacity: 0;
+  transition: transform 0.75s var(--ease-glass), opacity 0.3s ease;
+}
+.btn:hover::after, .btn-icon:hover::after, .seg-btn:hover::after, .seg-rec:hover::after,
+.report-tab:hover::after, .theme-toggle:hover::after, .menu-btn:hover::after, #login-form button:hover::after {
+  transform: translateX(135%); opacity: 1;
+}
+
+/* Sollevamento + alone viola su hover (solo bottoni "isolati") */
+.btn:hover, .seg-rec:hover, .theme-toggle:hover, .menu-btn:hover, #login-form button:hover {
+  transform: translateY(-1.5px);
+  border-color: rgba(255, 255, 255, 0.24);
+  box-shadow: 0 10px 26px -12px rgba(124, 92, 246, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+#login-form button:hover { filter: brightness(1.06); }
+
+/* Pressione elastica coerente su tutti i bottoni */
+.btn:active, .btn-icon:active, .seg-btn:active, .seg-rec:active, .report-tab:active,
+.theme-toggle:active, .menu-btn:active, #login-form button:active,
+.nav-item:active, .lib-card:active, .check:active, .cal-event:active {
+  transform: scale(0.94);
+  transition: transform 0.1s var(--ease-glass);
+}
+.theme-toggle:active, .menu-btn:active { transform: scale(0.9); }
+
+/* Stato attivo/selezionato: vetro viola, addio linea ciano */
+.seg-btn.active, .seg-rec.active, .report-tab.active {
+  background: var(--btn-active-bg); color: #fff; border-color: transparent;
+  box-shadow: var(--btn-active-sh);
+}
+#login-form button { background: var(--btn-active-bg); color: #fff; }
+
+/* Focus da tastiera: anello viola morbido, nessun contorno ciano di default */
+.btn:focus-visible, .btn-icon:focus-visible, .seg-btn:focus-visible, .seg-rec:focus-visible,
+.report-tab:focus-visible, .theme-toggle:focus-visible, .menu-btn:focus-visible,
+.nav-item:focus-visible, #login-form button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.55), 0 8px 22px -12px rgba(124, 92, 246, 0.5);
+}

@@ -21,6 +21,7 @@
       theme: saved.theme || "dark",
       contentStatus: saved.contentStatus || {},   // { id: statusKey }
       shooting: saved.shooting || {},              // { itemId: bool }
+      shootingScripts: saved.shootingScripts || {},// { itemId: scriptOverride }
       report: saved.report || "settimanale",
     };
   }
@@ -33,6 +34,14 @@
   function statusMeta(key) { return D.STATUSES.find((s) => s.key === key) || D.STATUSES[0]; }
   function shootDone(itemId, fallback) {
     return itemId in state.shooting ? state.shooting[itemId] : fallback;
+  }
+  // Script del creator: override in localStorage se modificato, altrimenti l'originale dei dati
+  function shootScript(it) {
+    return it.id in state.shootingScripts ? state.shootingScripts[it.id] : (it.script || "");
+  }
+  function findShootGroup(id) {
+    for (const g of D.SHOOTING) for (const it of g.items) if (it.id === id) return { g, it };
+    return null;
   }
 
   /* ---- Finestra "ultimo mese": ultimi 30gg dall'ultimo contenuto reale ---- */
@@ -89,6 +98,35 @@
     return ROUTES.find((r) => r.id === h) || ROUTES[0];
   }
 
+  /* Count-up: i numeri "crescono" da 0 al valore all'apertura di una sezione.
+     Anima solo testo puramente numerico (salta N/D, handle, ADV, valori con 'k'). */
+  function animateCounts(root) {
+    if (!root) return;
+    const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    root.querySelectorAll(".kpi .value, .value.grad, .vir-badge .n").forEach((node) => {
+      const m = node.textContent.trim().match(/^([▲▼]\s*)?([+\-]?)(\d[\d.,]*)(%?)$/);
+      if (!m) return;
+      const arrow = m[1] || "", sign = m[2] || "", isPct = m[4] === "%";
+      let target, decimals = 0;
+      if (isPct) {
+        const norm = m[3].replace(",", ".");
+        target = parseFloat(norm); decimals = (norm.split(".")[1] || "").length;
+      } else {
+        target = parseInt(m[3].replace(/[.,]/g, ""), 10);
+      }
+      if (!isFinite(target)) return;
+      const format = (v) => arrow + sign + (isPct ? v.toFixed(decimals) + "%" : num(Math.round(v)));
+      if (reduce || target === 0) { node.textContent = format(target); return; }
+      const dur = 950, start = performance.now(), ease = (t) => 1 - Math.pow(1 - t, 3);
+      node.textContent = format(0);
+      (function step(now) {
+        const p = Math.min(1, (now - start) / dur);
+        node.textContent = format(target * ease(p));
+        if (p < 1) requestAnimationFrame(step);
+      })(start);
+    });
+  }
+
   function router() {
     const r = currentRoute();
     $("#pageTitle").textContent = r.label;
@@ -100,6 +138,7 @@
     c.innerHTML = `<div class="view">${r.render()}</div>`;
     if (r.afterRender) r.afterRender();
     bindViewEvents(r.id);
+    animateCounts(c);
     closeSidebar();
     c.scrollTop = 0; window.scrollTo(0, 0);
   }
@@ -296,11 +335,16 @@
       const complete = done === g.items.length;
       const items = g.items.map((it) => {
         const dn = shootDone(it.id, it.done);
-        return `<label class="check${dn ? " done" : ""}" data-shoot="${it.id}">
-          <input type="checkbox" ${dn ? "checked" : ""}/>
-          <span class="box">${window.icon("check", 13)}</span>
-          <span class="txt">${escapeH(it.label)}</span>
-        </label>`;
+        const scr = shootScript(it);
+        const edited = it.id in state.shootingScripts && state.shootingScripts[it.id] !== (it.script || "");
+        return `<div class="shoot-item${dn ? " done" : ""}" data-shoot-open="${it.id}" title="Apri per leggere / modificare lo script">
+          <div class="check${dn ? " done" : ""}">
+            <span class="box" data-shoot-toggle="${it.id}" role="checkbox" aria-checked="${dn}" tabindex="0" title="Segna come registrato">${window.icon("check", 13)}</span>
+            <span class="txt">${escapeH(it.label)}</span>
+            <span class="shoot-open-ic">${window.icon("chevronRight", 16)}</span>
+          </div>
+          ${scr ? `<div class="shoot-script"><span class="shoot-script-k">Script per il creator${edited ? ' <em class="shoot-edited">· modificato</em>' : ""}</span>${escapeH(scr)}</div>` : ""}
+        </div>`;
       }).join("");
       return `<div class="card card-pad shoot-group${complete ? " done" : ""}">
         <div class="shoot-head"><span class="ic">${window.icon(g.icon, 20)}</span><span class="name">${g.category}</span>
@@ -377,7 +421,7 @@
       { key: "conversion", label: "Conversion", color: "#22d3ee" },
       { key: "authority", label: "Authority", color: "#22e39a" },
     ];
-    const RECOMMENDED = ["@xauusd.alantrader", "@coin.wise.inv", "@scotttaylorfx", "@casper_smc", "@huss.trades", "@cesco.fx", "@jorge_torresfx"];
+    const RECOMMENDED = ["@xauusd.alantrader", "@gold_trader_su", "@coin.wise.inv", "@scotttaylorfx", "@casper_smc", "@huss.trades", "@cesco.fx", "@jorge_torresfx"];
     const isRec = cmpSort === "recommended";
     const sortKey = isRec ? "virality" : cmpSort;
     const active = METRICS.find((m) => m.key === sortKey) || METRICS[0];
@@ -386,10 +430,12 @@
     const avg = Math.round(list.reduce((a, c) => a + c[sortKey], 0) / list.length);
     const top = list[0];
     const tier = (v) => (v >= 75 ? "#22e39a" : v >= 55 ? "#22d3ee" : v >= 35 ? "#a78bfa" : "#fb7185");
-    const roleColor = (r) => (/⚠️|NON COPIABILE|CONTROESEMPIO/i.test(r) ? "#fb7185" : /⭐|GOLD/.test(r) ? "#f0b23a" : "#8b5cf6");
+    const roleColor = (r, mark) => (mark === "warn" || /NON COPIABILE|CONTROESEMPIO/i.test(r) ? "#fb7185" : /GOLD/.test(r) ? "#f0b23a" : "#8b5cf6");
 
     const cards = list.map((c, i) => {
-      const rc = roleColor(c.role);
+      const rc = roleColor(c.role, c.mark);
+      const markIco = c.mark === "star" ? `<span class="cmp-role-ic">${window.icon("star", 12)}</span>`
+        : c.mark === "warn" ? `<span class="cmp-role-ic">${window.icon("alert", 12)}</span>` : "";
       const bars = METRICS.map((m) =>
         `<div class="cscore${m.key === sortKey ? " active" : ""}"><span class="cscore-l">${m.label}</span><span class="cscore-track"><i style="width:${c[m.key]}%;background:${m.color}"></i></span><b class="cscore-v">${c[m.key]}</b></div>`
       ).join("");
@@ -398,20 +444,20 @@
         <div class="cmp-top">
           <div class="cmp-rank">#${i + 1}</div>
           <div class="grow" style="min-width:0">
-            <div class="cmp-handle">${escapeH(c.handle)}${c.verified ? ' <span class="cmp-verif">✔︎</span>' : ""}${star}<span class="cmp-lang">${c.lang}</span></div>
+            <div class="cmp-handle">${escapeH(c.handle)}${c.verified ? ` <span class="cmp-verif">${window.icon("verified", 13)}</span>` : ""}${star}${c.country ? ` <span class="cmp-country">${window.icon("flag", 10)}${c.country}</span>` : ""}<span class="cmp-lang">${c.lang}</span></div>
             <div class="cmp-sub">${c.followers} follower · ${escapeH(c.frequency)}</div>
           </div>
           <div class="vir-badge"><div class="n" style="color:${tier(c[sortKey])}">${c[sortKey]}</div><div class="l">${active.label}</div></div>
         </div>
-        <div class="cmp-role" style="background:${hexA(rc, 0.14)};color:${rc};border-color:${hexA(rc, 0.4)}">${escapeH(c.role)}</div>
+        <div class="cmp-role" style="background:${hexA(rc, 0.14)};color:${rc};border-color:${hexA(rc, 0.4)}">${markIco}${escapeH(c.role)}</div>
         <div class="cmp-scoregrid">${bars}</div>
         <div class="cmp-note">${escapeH(c.note)}</div>
         <div class="cmp-row"><div class="k">Pattern</div><div class="v">${escapeH(c.pattern)}</div></div>
         <div class="cmp-row"><div class="k">Hook</div><div class="v">${c.hooks.map((h) => `"${escapeH(h)}"`).join(" · ")}</div></div>
         <div class="cmp-row"><div class="k">CTA</div><div class="v">${escapeH(c.cta)}</div></div>
         <div class="cmp-cols">
-          <div class="col repl"><div class="k">✓ Da replicare</div><ul>${c.replicate.map((r) => `<li>${escapeH(r)}</li>`).join("")}</ul></div>
-          <div class="col excl"><div class="k">✕ Da escludere</div><ul>${c.exclude.map((r) => `<li>${escapeH(r)}</li>`).join("")}</ul></div>
+          <div class="col repl"><div class="k">${window.icon("check", 13)} Da replicare</div><ul>${c.replicate.map((r) => `<li>${escapeH(r)}</li>`).join("")}</ul></div>
+          <div class="col excl"><div class="k">${window.icon("x", 13)} Da escludere</div><ul>${c.exclude.map((r) => `<li>${escapeH(r)}</li>`).join("")}</ul></div>
         </div>
       </div>`;
     }).join("");
@@ -461,7 +507,7 @@
     return `
       <div class="card card-pad" style="margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
         <div class="cmp-avatar" style="width:52px;height:52px;color:var(--cyan-2)"><img class="ig-pic" src="assets/img/iipersian.jpg" alt="@iipersian" onerror="this.remove()"/>${window.icon("instagram", 24)}</div>
-        <div><div style="font-weight:600;font-size:16px">${D.BRAND.igHandle} ${p.verified ? '<span style="color:var(--cyan-2)">✔︎</span>' : ""} <span class="muted" style="font-weight:400;font-size:13px">· ${escapeH(D.BRAND.igFullName)}</span></div>
+        <div><div style="font-weight:600;font-size:16px">${D.BRAND.igHandle} ${p.verified ? `<span class="cmp-verif">${window.icon("verified", 15)}</span>` : ""} <span class="muted" style="font-weight:400;font-size:13px">· ${escapeH(D.BRAND.igFullName)}</span></div>
           <div class="muted" style="font-size:12.5px"><a href="${D.BRAND.igUrl}" target="_blank" style="color:var(--cyan-2)">${D.BRAND.igUrl}</a></div></div>
         <div class="pill" style="margin-left:auto"><span class="dot"></span>Sync: ${D.IG_ANALYTICS.lastSync}</div>
       </div>
@@ -471,7 +517,7 @@
         ${metric("Follower", num(p.followers))}
         ${metric("Profili seguiti", num(p.following))}
         ${metric("Post totali", num(p.posts))}
-        ${metric("Account verificato", p.verified ? "Sì ✔︎" : "No")}
+        ${metric("Account verificato", p.verified ? `Sì <span class="cmp-verif" style="vertical-align:-2px">${window.icon("verified", 18)}</span>` : "No")}
         <div class="kpi-group-label">Ultimo mese · ${fmtRange(M.from, M.to)} (reale)</div>
         ${metric("Contenuti pubblicati", num(M.count))}
         ${metric("di cui Reel", num(M.reels_n))}
@@ -563,12 +609,10 @@
         <div class="section-title"><span class="bar"></span>Correlazione contenuti → ingressi Telegram</div>
         <div class="tbl-wrap"><table class="tbl">
           <thead><tr><th>Contenuto</th><th>Data</th><th>Ingressi</th><th>Note</th></tr></thead>
-          <tbody>${corr || '<tr><td colspan="4" class="muted">Si popola quando parte la produzione (dal 13 Lug) con il tracking attivo.</td></tr>'}</tbody>
+          <tbody>${corr || '<tr><td colspan="4" class="muted">Si popola quando parte la produzione (dal 20 Lug) con il tracking attivo.</td></tr>'}</tbody>
         </table></div>
         <div class="muted" style="font-size:12px;margin-top:10px">Obiettivo: individuare quali contenuti generano il maggior numero di ingressi nel gruppo.</div>
-      </div>
-
-      <div class="notice warn mt-lg"><span class="ni">${window.icon("gear")}</span><div>${escapeH(t.note)}</div></div>`;
+      </div>`;
   }
 
   /* -- Report ------------------------------------------------------------ */
@@ -582,7 +626,7 @@
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:18px;flex-wrap:wrap">
         <div class="report-tabs">${tab("settimanale", "Settimanale")}${tab("mensile", "Mensile")}</div>
         <span class="muted" style="font-size:13px">Report ${isW ? "settimanale" : "mensile"} · ${D.BRAND.campaign}</span>
-        <button class="btn" data-print style="margin-left:auto">🖨 Stampa / PDF</button>
+        <button class="btn" data-print style="margin-left:auto">${window.icon("printer", 15)} Stampa / PDF</button>
       </div>
 
       <div class="rep-two">
@@ -624,7 +668,7 @@
       <div class="modal-back open" id="modalBack">
         <div class="modal" role="dialog" aria-modal="true">
           <div class="modal-hero" style="background:linear-gradient(135deg, ${c.accent[0]}, ${c.accent[1]})">
-            <button class="close" data-close>×</button>
+            <button class="close" data-close aria-label="Chiudi">${window.icon("x", 18)}</button>
             <div class="m-id">${c.id} · ${c.format.toUpperCase()}</div>
             <div class="m-title">${escapeH(c.title)}</div>
             <div class="modal-tags">
@@ -660,6 +704,56 @@
     });
     document.addEventListener("keydown", escClose);
   }
+  /* Modale Shooting — stessa impostazione del calendario, con script EDITABILE */
+  function openShootModal(id) {
+    const found = findShootGroup(id);
+    if (!found) return;
+    const { g, it } = found;
+    const dn = shootDone(id, it.done);
+    const scr = shootScript(it);
+    const edited = it.id in state.shootingScripts && state.shootingScripts[it.id] !== (it.script || "");
+
+    el("modalRoot").innerHTML = `
+      <div class="modal-back open" id="modalBack">
+        <div class="modal" role="dialog" aria-modal="true">
+          <div class="modal-hero" style="background:linear-gradient(135deg, #8b5cf6, #3ce0ff)">
+            <button class="close" data-close aria-label="Chiudi">${window.icon("x", 18)}</button>
+            <div class="m-id">${window.icon(g.icon, 13)} ${escapeH(g.category)}</div>
+            <div class="m-title">${escapeH(it.label)}</div>
+          </div>
+          <div class="modal-body">
+            <div class="m-field"><div class="k">Stato</div>
+              <label class="m-check"><input type="checkbox" data-shoot-done="${it.id}" ${dn ? "checked" : ""}/><span>Registrato</span></label></div>
+            <div class="m-field">
+              <div class="k">Script per il creator <span class="m-edit-flag"${edited ? "" : ' style="display:none"'}>· modificato</span></div>
+              <textarea class="m-script" data-shoot-script="${it.id}" rows="9" spellcheck="false" placeholder="Scrivi qui lo script per il creator…">${escapeH(scr)}</textarea>
+              <div class="m-script-hint">${window.icon("bulb", 12)} Le modifiche si salvano da sole. <button class="m-reset" data-shoot-reset="${it.id}"${edited ? "" : ' style="display:none"'}>Ripristina originale</button></div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+
+    const back = el("modalBack");
+    back.addEventListener("click", (e) => { if (e.target === back || e.target.closest("[data-close]")) closeModal(); });
+    const ta = $("[data-shoot-script]", back);
+    const flag = $(".m-edit-flag", back), resetBtn = $(".m-reset", back);
+    ta.addEventListener("input", (e) => {
+      state.shootingScripts[it.id] = e.target.value; save();
+      const isEdited = e.target.value !== (it.script || "");
+      flag.style.display = isEdited ? "" : "none";
+      resetBtn.style.display = isEdited ? "" : "none";
+    });
+    $("[data-shoot-done]", back).addEventListener("change", (e) => {
+      state.shooting[it.id] = e.target.checked; save();
+    });
+    resetBtn.addEventListener("click", () => {
+      delete state.shootingScripts[it.id]; save();
+      ta.value = it.script || "";
+      flag.style.display = "none"; resetBtn.style.display = "none";
+    });
+    document.addEventListener("keydown", escClose);
+  }
+
   function escClose(e) { if (e.key === "Escape") closeModal(); }
   function closeModal() {
     el("modalRoot").innerHTML = "";
@@ -688,12 +782,21 @@
     }
 
     if (routeId === "shooting") {
-      c.querySelectorAll("[data-shoot]").forEach((lbl) => lbl.addEventListener("click", (e) => {
-        e.preventDefault();
-        const id = lbl.dataset.shoot;
-        const base = findShoot(id);
-        const cur = shootDone(id, base ? base.done : false);
-        state.shooting[id] = !cur; save(); rerender();
+      // Spunta rapida "registrato" (toggle) — non apre il modale
+      c.querySelectorAll("[data-shoot-toggle]").forEach((box) => {
+        const toggle = (e) => {
+          e.preventDefault(); e.stopPropagation();
+          const id = box.dataset.shootToggle;
+          const base = findShoot(id);
+          state.shooting[id] = !shootDone(id, base ? base.done : false); save(); rerender();
+        };
+        box.addEventListener("click", toggle);
+        box.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") toggle(e); });
+      });
+      // Click sul resto dell'item → apre il modale (come nel calendario editoriale)
+      c.querySelectorAll("[data-shoot-open]").forEach((item) => item.addEventListener("click", (e) => {
+        if (e.target.closest("[data-shoot-toggle]")) return;
+        openShootModal(item.dataset.shootOpen);
       }));
     }
 
