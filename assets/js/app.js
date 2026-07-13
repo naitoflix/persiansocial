@@ -36,13 +36,35 @@
     return itemId in state.shooting ? state.shooting[itemId] : fallback;
   }
   // Script del creator: override in localStorage se modificato, altrimenti l'originale dei dati
-  function shootScript(it) {
-    return it.id in state.shootingScripts ? state.shootingScripts[it.id] : (it.script || "");
+  function shootScript(sh) {
+    return sh.id in state.shootingScripts ? state.shootingScripts[sh.id] : (sh.script || "");
   }
-  function findShootGroup(id) {
-    for (const g of D.SHOOTING) for (const it of g.items) if (it.id === id) return { g, it };
-    return null;
+  // Tipi di ripresa (ordine = come appaiono nello Shooting Planner)
+  const SHOT_KINDS = [
+    { key: "talking", label: "Talking head (volto in camera)", icon: "mic" },
+    { key: "screen", label: "Screen recording (XAUUSD)", icon: "monitor" },
+    { key: "broll", label: "B-roll lifestyle sobrio", icon: "film" },
+    { key: "vo", label: "Voice over (audio pulito)", icon: "volume" },
+    { key: "graphic", label: "Materiale grafico (editor)", icon: "palette" },
+  ];
+  function kindMeta(kind) { return SHOT_KINDS.find((k) => k.key === kind) || { key: kind, label: kind, icon: "video" }; }
+  // FONTE UNICA: gli shot derivano dai contenuti (CONTENT.shots) + gli asset generici riutilizzabili.
+  // Shooting, Calendario e Library leggono tutti da CONTENT → sempre sincronizzati.
+  function allShots() {
+    const out = [];
+    D.CONTENT.forEach((c) => (c.shots || []).forEach((sh, i) => {
+      const km = kindMeta(sh.kind);
+      out.push({ id: `${c.id}::${sh.kind}::${i}`, kind: sh.kind, label: sh.label, script: sh.script,
+        contentId: c.id, contentTitle: c.title, contentDate: c.date, done: false, kindLabel: km.label, kindIcon: km.icon });
+    }));
+    (D.PRODUCTION_GENERIC || []).forEach((sh, i) => {
+      const km = kindMeta(sh.kind);
+      out.push({ id: `gen::${sh.kind}::${i}`, kind: sh.kind, label: sh.label, script: sh.script,
+        contentId: null, contentTitle: "Generico / riutilizzabile", contentDate: null, done: false, kindLabel: km.label, kindIcon: km.icon });
+    });
+    return out;
   }
+  function findShoot(id) { return allShots().find((s) => s.id === id) || null; }
 
   /* ---- Finestra "ultimo mese": ultimi 30gg dall'ultimo contenuto reale ---- */
   function monthlyStats() {
@@ -323,36 +345,40 @@
 
   /* -- Shooting Planner -------------------------------------------------- */
   function viewShooting() {
-    let totalItems = 0, doneItems = 0;
-    D.SHOOTING.forEach((g) => g.items.forEach((it) => {
-      totalItems++; if (shootDone(it.id, it.done)) doneItems++;
-    }));
+    const shots = allShots();
+    const totalItems = shots.length;
+    const doneItems = shots.filter((s) => shootDone(s.id, s.done)).length;
     const pct = totalItems ? (doneItems / totalItems) * 100 : 0;
 
-    const groups = D.SHOOTING.map((g) => {
-      const done = g.items.filter((it) => shootDone(it.id, it.done)).length;
-      const pct = Math.round((done / g.items.length) * 100);
-      const complete = done === g.items.length;
-      const items = g.items.map((it) => {
-        const dn = shootDone(it.id, it.done);
-        const scr = shootScript(it);
-        const edited = it.id in state.shootingScripts && state.shootingScripts[it.id] !== (it.script || "");
-        return `<div class="shoot-item${dn ? " done" : ""}" data-shoot-open="${it.id}" title="Apri per leggere / modificare lo script">
+    const groups = SHOT_KINDS.map((k) => {
+      const list = shots.filter((s) => s.kind === k.key);
+      if (!list.length) return "";
+      const done = list.filter((s) => shootDone(s.id, s.done)).length;
+      const gpct = Math.round((done / list.length) * 100);
+      const complete = done === list.length;
+      const items = list.map((sh) => {
+        const dn = shootDone(sh.id, sh.done);
+        const scr = shootScript(sh);
+        const edited = sh.id in state.shootingScripts && state.shootingScripts[sh.id] !== (sh.script || "");
+        const ref = sh.contentId
+          ? `<span class="shoot-ref" style="--st:${statusMeta(statusOf(sh.contentId)).color}">${sh.contentId}</span>`
+          : `<span class="shoot-ref gen">GEN</span>`;
+        return `<div class="shoot-item${dn ? " done" : ""}" data-shoot-open="${sh.id}" title="Apri per leggere / modificare lo script">
           <div class="check${dn ? " done" : ""}">
-            <span class="box" data-shoot-toggle="${it.id}" role="checkbox" aria-checked="${dn}" tabindex="0" title="Segna come registrato">${window.icon("check", 13)}</span>
-            <span class="txt">${escapeH(it.label)}</span>
+            <span class="box" data-shoot-toggle="${sh.id}" role="checkbox" aria-checked="${dn}" tabindex="0" title="Segna come registrato">${window.icon("check", 13)}</span>
+            <span class="txt">${ref}${escapeH(sh.label)}</span>
             <span class="shoot-open-ic">${window.icon("chevronRight", 16)}</span>
           </div>
           ${scr ? `<div class="shoot-script"><span class="shoot-script-k">Script per il creator${edited ? ' <em class="shoot-edited">· modificato</em>' : ""}</span>${escapeH(scr)}</div>` : ""}
         </div>`;
       }).join("");
       return `<div class="card card-pad shoot-group${complete ? " done" : ""}">
-        <div class="shoot-head"><span class="ic">${window.icon(g.icon, 20)}</span><span class="name">${g.category}</span>
-          <span class="count">${complete ? window.icon("check", 13) + " completo" : done + "/" + g.items.length}</span></div>
-        <div class="progress-line shoot-progress"><i style="width:${pct}%"></i></div>
+        <div class="shoot-head"><span class="ic">${window.icon(k.icon, 20)}</span><span class="name">${k.label}</span>
+          <span class="count">${complete ? window.icon("check", 13) + " completo" : done + "/" + list.length}</span></div>
+        <div class="progress-line shoot-progress"><i style="width:${gpct}%"></i></div>
         <div class="check-list">${items}</div>
       </div>`;
-    }).join("");
+    }).filter(Boolean).join("");
 
     return `
       <div class="card card-pad" style="margin-bottom:18px">
@@ -363,12 +389,12 @@
           </div>
           <div style="text-align:right">
             <div style="font-family:var(--font-head);font-weight:700;font-size:30px" class="value grad">${doneItems}/${totalItems}</div>
-            <div class="muted" style="font-size:12px">elementi completati</div>
+            <div class="muted" style="font-size:12px">riprese completate</div>
           </div>
         </div>
       </div>
       <div class="notice" style="margin-bottom:18px"><span class="ni">${window.icon("bulb")}</span>
-        <div>Registra tutto in blocco in un'unica giornata, poi si monta nel mese. Spunta ogni elemento man mano che lo giri — lo stato viene salvato in automatico.</div>
+        <div>Lo Shooting è <b>generato dai contenuti del Calendario</b> (sincronizzato): il tag colorato (es. <b>R1</b>) indica il contenuto, <b>GEN</b> è materiale riutilizzabile. Registra tutto in blocco, poi si monta nel mese. Clicca una voce per leggere o modificare lo script; spunta il quadratino quando l'hai girata.</div>
       </div>
       <div class="grid cols-2" style="align-items:start">${groups}</div>`;
   }
@@ -682,10 +708,15 @@
               <select class="m-status-select" data-status-for="${c.id}">${options}</select></div>
             <div class="m-field"><div class="k">Hook</div><div class="v">"${escapeH(c.hook)}"</div></div>
             <div class="m-field"><div class="k">Angolo</div><div class="v">${escapeH(c.angle)}</div></div>
-            <div class="m-field"><div class="k">Script</div><div class="v">${escapeH(c.script)}</div></div>
             <div class="m-field"><div class="k">Caption</div><div class="v">${escapeH(c.caption)}</div></div>
             <div class="m-field"><div class="k">CTA</div><div class="v">${escapeH(c.cta)}</div></div>
-            <div class="m-field"><div class="k">Materiale necessario</div><div class="m-mats">${c.materials.map((mm) => `<span class="chip">${escapeH(mm)}</span>`).join("")}</div></div>
+            <div class="m-field"><div class="k">Piano di ripresa <span class="m-hint-inline">— sincronizzato con lo Shooting Planner</span></div>
+              <div class="m-shots">${(c.shots || []).map((sh, i) => {
+                const km = kindMeta(sh.kind);
+                const sid = `${c.id}::${sh.kind}::${i}`;
+                const scr = sid in state.shootingScripts ? state.shootingScripts[sid] : sh.script;
+                return `<div class="m-shot"><div class="m-shot-h">${window.icon(km.icon, 13)} ${escapeH(km.label)} — ${escapeH(sh.label)}</div><div class="m-shot-s">${escapeH(scr)}</div></div>`;
+              }).join("")}</div></div>
             ${hasMetrics ? `<div class="m-field"><div class="k">Metriche</div>
               <div class="m-grid">
                 ${metricBox(fmt(m.views), "Views")}${metricBox(fmt(m.likes), "Like")}
@@ -704,31 +735,33 @@
     });
     document.addEventListener("keydown", escClose);
   }
-  /* Modale Shooting — stessa impostazione del calendario, con script EDITABILE */
+  /* Modale Shooting — stessa impostazione del calendario, con script EDITABILE.
+     Lo shot deriva da un contenuto (CONTENT.shots) o dal pool generico. */
   function openShootModal(id) {
-    const found = findShootGroup(id);
-    if (!found) return;
-    const { g, it } = found;
-    const dn = shootDone(id, it.done);
-    const scr = shootScript(it);
-    const edited = it.id in state.shootingScripts && state.shootingScripts[it.id] !== (it.script || "");
+    const sh = findShoot(id);
+    if (!sh) return;
+    const dn = shootDone(id, sh.done);
+    const scr = shootScript(sh);
+    const edited = sh.id in state.shootingScripts && state.shootingScripts[sh.id] !== (sh.script || "");
 
     el("modalRoot").innerHTML = `
       <div class="modal-back open" id="modalBack">
         <div class="modal" role="dialog" aria-modal="true">
           <div class="modal-hero" style="background:linear-gradient(135deg, #8b5cf6, #3ce0ff)">
             <button class="close" data-close aria-label="Chiudi">${window.icon("x", 18)}</button>
-            <div class="m-id">${window.icon(g.icon, 13)} ${escapeH(g.category)}</div>
-            <div class="m-title">${escapeH(it.label)}</div>
+            <div class="m-id">${window.icon(sh.kindIcon, 13)} ${escapeH(sh.kindLabel)}${sh.contentId ? " · " + sh.contentId : " · Generico"}</div>
+            <div class="m-title">${escapeH(sh.label)}</div>
+            ${sh.contentId ? `<div class="modal-tags"><span class="badge" style="background:rgba(0,0,0,0.3);color:#fff;border-color:rgba(255,255,255,0.2)">${window.icon("video", 12)} Per: ${sh.contentId} · ${escapeH(sh.contentTitle)}</span></div>` : ""}
           </div>
           <div class="modal-body">
             <div class="m-field"><div class="k">Stato</div>
-              <label class="m-check"><input type="checkbox" data-shoot-done="${it.id}" ${dn ? "checked" : ""}/><span>Registrato</span></label></div>
+              <label class="m-check"><input type="checkbox" data-shoot-done="${sh.id}" ${dn ? "checked" : ""}/><span>Registrato</span></label></div>
             <div class="m-field">
               <div class="k">Script per il creator <span class="m-edit-flag"${edited ? "" : ' style="display:none"'}>· modificato</span></div>
-              <textarea class="m-script" data-shoot-script="${it.id}" rows="9" spellcheck="false" placeholder="Scrivi qui lo script per il creator…">${escapeH(scr)}</textarea>
-              <div class="m-script-hint">${window.icon("bulb", 12)} Le modifiche si salvano da sole. <button class="m-reset" data-shoot-reset="${it.id}"${edited ? "" : ' style="display:none"'}>Ripristina originale</button></div>
+              <textarea class="m-script" data-shoot-script="${sh.id}" rows="10" spellcheck="false" placeholder="Scrivi qui lo script per il creator…">${escapeH(scr)}</textarea>
+              <div class="m-script-hint">${window.icon("bulb", 12)} Le modifiche si salvano da sole. <button class="m-reset" data-shoot-reset="${sh.id}"${edited ? "" : ' style="display:none"'}>Ripristina originale</button></div>
             </div>
+            ${sh.contentId ? `<div class="m-field"><button class="btn" data-open-content="${sh.contentId}">${window.icon("chevronRight", 14)} Apri il contenuto ${sh.contentId} nel calendario</button></div>` : ""}
           </div>
         </div>
       </div>`;
@@ -738,19 +771,21 @@
     const ta = $("[data-shoot-script]", back);
     const flag = $(".m-edit-flag", back), resetBtn = $(".m-reset", back);
     ta.addEventListener("input", (e) => {
-      state.shootingScripts[it.id] = e.target.value; save();
-      const isEdited = e.target.value !== (it.script || "");
+      state.shootingScripts[sh.id] = e.target.value; save();
+      const isEdited = e.target.value !== (sh.script || "");
       flag.style.display = isEdited ? "" : "none";
       resetBtn.style.display = isEdited ? "" : "none";
     });
     $("[data-shoot-done]", back).addEventListener("change", (e) => {
-      state.shooting[it.id] = e.target.checked; save();
+      state.shooting[sh.id] = e.target.checked; save();
     });
     resetBtn.addEventListener("click", () => {
-      delete state.shootingScripts[it.id]; save();
-      ta.value = it.script || "";
+      delete state.shootingScripts[sh.id]; save();
+      ta.value = sh.script || "";
       flag.style.display = "none"; resetBtn.style.display = "none";
     });
+    const openC = $("[data-open-content]", back);
+    if (openC) openC.addEventListener("click", () => openContentModal(openC.dataset.openContent));
     document.addEventListener("keydown", escClose);
   }
 
@@ -819,11 +854,6 @@
       const pb = c.querySelector("[data-print]");
       if (pb) pb.addEventListener("click", () => window.print());
     }
-  }
-
-  function findShoot(id) {
-    for (const g of D.SHOOTING) for (const it of g.items) if (it.id === id) return it;
-    return null;
   }
 
   function rerender() {

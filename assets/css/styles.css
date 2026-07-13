@@ -393,6 +393,16 @@ table.tbl .row-title { color: var(--text); font-weight: 600; }
 .m-reset { background: none; border: none; padding: 0; margin-left: 2px; font: inherit; font-size: 11.5px; color: var(--cyan-2); cursor: pointer; text-decoration: underline; }
 .m-reset:hover { color: var(--text); }
 
+/* Shooting sincronizzato: tag del contenuto + breakdown nel modale contenuto */
+.shoot-ref { display: inline-block; font-size: 9.5px; font-weight: 800; letter-spacing: 0.5px; color: #0a0714; background: var(--st, var(--violet)); border-radius: 5px; padding: 1px 6px; margin-right: 7px; vertical-align: 1px; }
+.shoot-ref.gen { background: none; color: var(--text-mute); border: 1px solid var(--border); }
+.m-hint-inline { font-size: 10px; letter-spacing: 0; text-transform: none; color: var(--text-mute); font-weight: 500; }
+.m-shots { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.m-shot { border: 1px solid var(--border); border-left: 3px solid var(--violet); border-radius: 10px; padding: 10px 12px; background: var(--surface-hi); }
+.m-shot-h { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
+.m-shot-h .pfx-ico { flex: none; color: var(--cyan-2); }
+.m-shot-s { font-size: 12.5px; color: var(--text-dim); line-height: 1.55; }
+
 .progress-line { height: 8px; border-radius: 999px; background: var(--surface-hi); overflow: hidden; border: 1px solid var(--border); }
 .progress-line > i { display: block; height: 100%; background: var(--grad); border-radius: 999px; transition: width 0.4s ease; }
 
