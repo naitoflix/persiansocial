@@ -43,7 +43,6 @@
   const SHOT_KINDS = [
     { key: "talking", label: "Talking head (volto in camera)", icon: "mic" },
     { key: "screen", label: "Screen recording (XAUUSD)", icon: "monitor" },
-    { key: "broll", label: "B-roll lifestyle sobrio", icon: "film" },
     { key: "vo", label: "Voice over (audio pulito)", icon: "volume" },
     { key: "graphic", label: "Materiale grafico (editor)", icon: "palette" },
   ];
@@ -279,7 +278,7 @@
   }
 
   /* -- Calendar ---------------------------------------------------------- */
-  let calMonth = 6, calYear = 2026; // Luglio 2026 (0-indexed month)
+  let calMonth = 7, calYear = 2026; // Agosto 2026 (0-indexed month)
 
   function viewCalendar() {
     const monthName = new Date(calYear, calMonth, 1).toLocaleDateString("it-IT", { month: "long", year: "numeric" });
@@ -636,7 +635,7 @@
         <div class="section-title"><span class="bar"></span>Correlazione contenuti → ingressi Telegram</div>
         <div class="tbl-wrap"><table class="tbl">
           <thead><tr><th>Contenuto</th><th>Data</th><th>Ingressi</th><th>Note</th></tr></thead>
-          <tbody>${corr || '<tr><td colspan="4" class="muted">Si popola quando parte la produzione (dal 20 Lug) con il tracking attivo.</td></tr>'}</tbody>
+          <tbody>${corr || '<tr><td colspan="4" class="muted">Si popola quando parte la produzione (dal 10 Ago) con il tracking attivo.</td></tr>'}</tbody>
         </table></div>
         <div class="muted" style="font-size:12px;margin-top:10px">Obiettivo: individuare quali contenuti generano il maggior numero di ingressi nel gruppo.</div>
       </div>`;

@@ -5,7 +5,7 @@
    dato fornito). Le metriche "insight" private (reach, impression, salvataggi,
    condivisioni, visite profilo, click bio, follower persi) NON sono scrapabili:
    richiedono le Instagram Graph API (account Business/Creator collegato via
-   login Meta) → marcate na:true. Collaborazione continuativa · Mese 1 (produzione dal 20 Lug).
+   login Meta) → marcate na:true. Collaborazione continuativa · Mese 1 (produzione dal 10 Ago).
    ========================================================================== */
 
 const BRAND = {
@@ -78,13 +78,13 @@ const MONTHLY_GOAL = {
    a partire da IG_ANALYTICS.published (vedi monthlyStats() in app.js). */
 
 /* ------------------------------------------------------------------ *
- *  CONTENT — piano contenuti GOLD · Mese 1 (produzione dal 20 Lug) *
+ *  CONTENT — piano contenuti GOLD · Mese 1 (produzione dal 10 Ago) *
  *  Non ancora prodotto → tutti "da-registrare", metriche a 0.        *
  * ------------------------------------------------------------------ */
 const CONTENT = [
   {
     id: "R1", title: "Analisi giusta, conto in rosso", format: "Reel",
-    objective: ["Authority", "Telegram"], date: "2026-07-20", platform: "Instagram",
+    objective: ["Authority", "Telegram"], date: "2026-08-10", platform: "Instagram",
     status: "da-registrare", angle: "Errore / Psicologia", focus: "Conversione",
     hook: "Analisi giusta. Conto in rosso.",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
@@ -98,20 +98,20 @@ const CONTENT = [
   },
   {
     id: "C1", title: "5 controlli prima di entrare su GOLD", format: "Carosello",
-    objective: ["Save", "Telegram"], date: "2026-07-22", platform: "Instagram",
+    objective: ["Save", "Telegram"], date: "2026-08-12", platform: "Instagram",
     status: "da-registrare", angle: "Checklist", focus: "Conversione",
     hook: "Prima di premere BUY o SELL sull'oro, leggi questo.",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
     accent: ["#7c3aed", "#3ce0ff"],
     shots: [
-      { kind: "graphic", label: "Carosello 7 slide (1080×1350, palette scura/oro)", script: "7 slide, palette scura/oro sobria, un concetto per slide, testo grande e salvabile. 1) COVER: «Prima di premere BUY o SELL sull'oro, leggi questo». 2) STRUTTURA: il prezzo rompe o rimbalza? 3) ZONA: sei su un livello che conta o nel mezzo? 4) NEWS: c'è un evento ad alto impatto nelle prossime ore? 5) RISCHIO: quanto perdo se ho torto (deciso prima)? 6) PIANO D'USCITA: dove chiudo in perdita e in profitto? 7) ENDCARD: «Cinque sì = puoi valutare. Un solo no = stai fermo. Commenta FX e ti arriva il link del gruppo gratuito in DM.»" },
+      { kind: "graphic", label: "Carosello 7 slide (1080×1350, palette viola/cyano premium)", script: "7 slide, palette VIOLA/CYANO premium (viola #8b5cf6 → cyano #22d3ee, fondo scuro elegante, accenti oro solo dove serve), un concetto per slide, testo grande e salvabile. 1) COVER: «Prima di premere BUY o SELL sull'oro, leggi questo». 2) STRUTTURA: il prezzo rompe o rimbalza? 3) ZONA: sei su un livello che conta o nel mezzo? 4) NEWS: c'è un evento ad alto impatto nelle prossime ore? (l'oro fa i movimenti più forti su FOMC, CPI e NFP USA — dato storico). 5) RISCHIO: quanto perdo se ho torto (deciso prima)? 6) PIANO D'USCITA: dove chiudo in perdita e in profitto? 7) ENDCARD: «Cinque sì = puoi valutare. Un solo no = stai fermo. Commenta FX e ti arriva il link del gruppo gratuito in DM.»" },
     ],
     caption: "Salva questa checklist e rileggila prima di ogni entrata su XAUUSD. Cinque domande: struttura, zona, news, rischio, piano d'uscita. Commenta FX e ti mando in DM il link del gruppo (dentro la versione stampabile).",
     metrics: { views: 0, likes: 0, comments: 0, shares: 0, saves: 0, reach: 0, engagement: 0 },
   },
   {
     id: "R2", title: "\"L'oro sale con la paura\" — mezza verità", format: "Reel",
-    objective: ["Reach", "Authority"], date: "2026-07-24", platform: "Instagram",
+    objective: ["Reach", "Authority"], date: "2026-08-14", platform: "Instagram",
     status: "da-registrare", angle: "Mito", focus: "Reach",
     hook: "\"L'oro = bene rifugio\" è una mezza bugia.",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
@@ -125,20 +125,20 @@ const CONTENT = [
   },
   {
     id: "C2", title: "7 errori che ti bruciano il conto sull'oro", format: "Carosello",
-    objective: ["Reach", "Save"], date: "2026-07-27", platform: "Instagram",
+    objective: ["Reach", "Save"], date: "2026-08-17", platform: "Instagram",
     status: "da-registrare", angle: "Errori", focus: "Reach",
     hook: "7 errori che ti stanno bruciando il conto sull'oro (il n°4 è il più comune).",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
     accent: ["#7c3aed", "#3ce0ff"],
     shots: [
-      { kind: "graphic", label: "Carosello 9 slide con evidenziazioni animate", script: "9 slide, palette scura/oro, evidenziazioni animate. 1) COVER: «7 errori che ti stanno bruciando il conto sull'oro (il n°4 è il più comune)». 2) Nessuno stop. 3) Aumentare la size dopo la perdita. 4) Operare sulle news [evidenzia: il più comune]. 5) Spostare lo stop. 6) Chiudere presto i profitti. 7) Copiare senza capire. 8) Non tenere uno storico. 9) ENDCARD: «Quanti ne fai? Salva e commenta FX: ti arriva il link del gruppo gratuito in DM.»" },
+      { kind: "graphic", label: "Carosello 9 slide (palette viola/cyano premium, evidenziazioni animate)", script: "9 slide, palette VIOLA/CYANO premium (viola #8b5cf6 → cyano #22d3ee, fondo scuro elegante), evidenziazioni animate. 1) COVER: «7 errori che ti stanno bruciando il conto sull'oro (il n°4 è il più comune)». 2) Nessuno stop. 3) Aumentare la size dopo la perdita. 4) Operare sulle news [evidenzia: il più comune — proprio su FOMC/CPI/NFP l'oro fa i movimenti più violenti]. 5) Spostare lo stop. 6) Chiudere presto i profitti. 7) Copiare senza capire. 8) Non tenere uno storico. 9) ENDCARD: «Quanti ne fai? Salva e commenta FX: ti arriva il link del gruppo gratuito in DM.»" },
     ],
     caption: "L'oro non brucia i conti. Li bruciano questi 7 errori, ripetuti ogni giorno. Rileggi la lista e sii onesto: quanti ne fai? Tagga chi ne fa almeno 3. Commenta FX per il link del gruppo (in DM).",
     metrics: { views: 0, likes: 0, comments: 0, shares: 0, saves: 0, reach: 0, engagement: 0 },
   },
   {
     id: "R3", title: "Come leggo un setup su GOLD in 30 secondi", format: "Reel",
-    objective: ["Authority", "Telegram"], date: "2026-07-29", platform: "Instagram",
+    objective: ["Authority", "Telegram"], date: "2026-08-19", platform: "Instagram",
     status: "da-registrare", angle: "Screen recording", focus: "Conversione",
     hook: "3 cose prima di toccare l'oro.",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
@@ -152,27 +152,27 @@ const CONTENT = [
   },
   {
     id: "C3", title: "3 bugie sul trading dell'oro", format: "Carosello",
-    objective: ["Authority", "Engagement"], date: "2026-07-31", platform: "Instagram",
+    objective: ["Authority", "Engagement"], date: "2026-08-21", platform: "Instagram",
     status: "da-registrare", angle: "False credenze", focus: "Reach",
     hook: "3 bugie sull'oro che ti stanno costando soldi.",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
     accent: ["#7c3aed", "#3ce0ff"],
     shots: [
-      { kind: "graphic", label: "Carosello 6 slide (grafica controcorrente)", script: "6 slide, grafica controcorrente. 1) COVER: «3 bugie sull'oro che ti stanno costando soldi». 2) BUGIA 1: l'oro sale sempre nel lungo. 3) BUGIA 2: servono tanti indicatori. 4) BUGIA 3: coi segnali giusti non serve capire nulla. 5) Il denominatore comune: cercano la scorciatoia. 6) ENDCARD: «A quale ci avevi creduto? Scrivilo nei commenti. Commenta FX per il link del gruppo gratuito in DM.»" },
+      { kind: "graphic", label: "Carosello 6 slide (palette viola/cyano premium, data-driven)", script: "6 slide, palette VIOLA/CYANO premium (viola #8b5cf6 → cyano #22d3ee, fondo scuro elegante). Dati VERI in sovrimpressione, con fonte. 1) COVER: «3 bugie sull'oro che ti stanno costando soldi». 2) BUGIA 1 'l'oro sale sempre nel lungo' → REALTÀ: dal picco di ~1.920$ (set 2011) è sceso di circa il 45% fino a ~1.050$ (dic 2015). Sale nel lungo, ma con drawdown enormi. 3) BUGIA 2 'servono tanti indicatori' → REALTÀ: il vero motore dell'oro sono i tassi reali USA e il dollaro (DXY), a cui è storicamente inverso — non dieci indicatori. 4) BUGIA 3 'coi segnali giusti non serve capire' → REALTÀ: anche il metodo migliore ha operazioni in perdita; senza gestione del rischio salti il conto. 5) BONUS/curiosità: nel 2025 le banche centrali hanno comprato oltre 1.000 tonnellate d'oro (2° anno record di sempre, fonte World Gold Council). 6) ENDCARD: «A quale ci avevi creduto? Scrivilo nei commenti. Commenta FX per il link del gruppo gratuito in DM.» [Fonti a schermo: dati storici XAUUSD · World Gold Council]" },
     ],
     caption: "Tre frasi che senti ovunque sull'oro e che ti stanno rallentando. Quale di queste 3 ci avevi creduto? Scrivilo nei commenti — e commenta FX per il link del gruppo (in DM).",
     metrics: { views: 0, likes: 0, comments: 0, shares: 0, saves: 0, reach: 0, engagement: 0 },
   },
   {
     id: "R4", title: "La mia routine prima di New York", format: "Reel",
-    objective: ["Trust", "Telegram"], date: "2026-08-03", platform: "Instagram",
+    objective: ["Trust", "Telegram"], date: "2026-08-24", platform: "Instagram",
     status: "da-registrare", angle: "Backstage / Routine", focus: "Conversione",
     hook: "Cosa faccio nell'ora prima di New York.",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
     accent: ["#8b5cf6", "#22d3ee"],
     shots: [
-      { kind: "broll", label: "B-roll routine pre-New York (12-15s montabili)", script: "B-roll lifestyle sobrio della routine pre-New York: caffè versato, scrivania, calendario economico aperto, mani che sistemano la postazione. Luce naturale, movimenti lenti, niente lusso." },
-      { kind: "vo", label: "Voice over routine (copione completo sopra il b-roll, 35-45s)", script: "[0-4s · HOOK] «Le mie giornate sull'oro le vinco o le perdo nell'ora PRIMA che apra New York. Prima ancora di guardare un grafico in tempo reale.»\n[4-14s · STEP 1-2] «Rileggo il piano di ieri: cosa ha funzionato e cosa no, senza raccontarmela. Poi apro il calendario economico: se oggi c'è un dato ad alto impatto, lo so già — rischio meno, o resto proprio fuori.»\n[14-25s · STEP 3] «Definisco due scenari: se il prezzo va di qua faccio questo, se va di là faccio quello. Tutti e due decisi adesso, che sono lucido e non ho un euro sul mercato. Poi poso il telefono.»\n[25-33s · PRINCIPIO] «Così quando apre New York non devo più decidere niente sotto pressione. Devo solo eseguire una scelta che ho già preso a mente fredda. È lì che si fa la differenza.»\n[DELIVERY] Voce calma sopra il b-roll (caffè, calendario economico, scrivania). Nessuna fretta, come una confidenza." },
+      { kind: "screen", label: "Screen prep pre-New York — calendario economico + livelli (12-15s)", script: "Screen recording della preparazione reale: calendario economico aperto (evidenzia gli eventi ad alto impatto della giornata) + grafico XAUUSD con i livelli e i 2 scenari segnati a mano. È il 'dietro le quinte' che conta: niente lifestyle, solo il lavoro vero. Movimenti puliti, 12-15s montabili." },
+      { kind: "vo", label: "Voice over routine (copione completo sopra lo screen di prep, 35-45s)", script: "[0-4s · HOOK] «Le mie giornate sull'oro le vinco o le perdo nell'ora PRIMA che apra New York. Prima ancora di guardare un grafico in tempo reale.»\n[4-14s · STEP 1-2] «Rileggo il piano di ieri: cosa ha funzionato e cosa no, senza raccontarmela. Poi apro il calendario economico: se oggi c'è un dato ad alto impatto, lo so già — rischio meno, o resto proprio fuori.»\n[14-25s · STEP 3] «Definisco due scenari: se il prezzo va di qua faccio questo, se va di là faccio quello. Tutti e due decisi adesso, che sono lucido e non ho un euro sul mercato. Poi poso il telefono.»\n[25-33s · PRINCIPIO] «Così quando apre New York non devo più decidere niente sotto pressione. Devo solo eseguire una scelta che ho già preso a mente fredda. È lì che si fa la differenza.»\n[DELIVERY] Voce calma sopra lo screen di preparazione (calendario economico, livelli, scenari). Nessuna fretta, come una confidenza." },
       { kind: "talking", label: "Chiusura a volto (8-12s)", script: "[CHIUSURA a volto, guardando in camera] «Alla fine la costanza non è motivazione: è routine. Piano, news, due scenari, focus — e poi eseguo, senza pensarci troppo. Se vuoi la mia checklist pre-apertura, quella che seguo ogni giorno, commenta FX: ti arriva in DM il link del gruppo gratuito e la trovi dentro.»" },
     ],
     caption: "La costanza non è motivazione, è routine. Piano · News · Scenari · Focus. Poi eseguo. Niente magia. Commenta FX e ti arriva il link del gruppo gratuito in DM (dentro la mia checklist pre-apertura).",
@@ -180,20 +180,20 @@ const CONTENT = [
   },
   {
     id: "C4", title: "Perché salti lo stop loss (psicologia)", format: "Carosello",
-    objective: ["Trust", "Save"], date: "2026-08-05", platform: "Instagram",
+    objective: ["Trust", "Save"], date: "2026-08-26", platform: "Instagram",
     status: "da-registrare", angle: "Trading Psychology", focus: "Conversione",
     hook: "Non salti lo stop per strategia. Lo salti per paura.",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
     accent: ["#7c3aed", "#3ce0ff"],
     shots: [
-      { kind: "graphic", label: "Carosello 7 slide (tono confessionale)", script: "7 slide, tono confessionale. 1) COVER: «Non salti lo stop per strategia. Lo salti per paura.». 2) Lo stop loss è un'ammissione: 'mi sono sbagliato'. 3) Avversione alla perdita. 4) La speranza del 'torna su'. 5) Risultato: perdite piccole che diventano grandi. 6) La soluzione: lo stop si decide PRIMA di entrare, quando sei lucido. 7) ENDCARD: «Salva questo. Commenta FX e ti arriva il link del gruppo gratuito in DM.»" },
+      { kind: "graphic", label: "Carosello 7 slide (palette viola/cyano premium, tono confessionale)", script: "7 slide, palette VIOLA/CYANO premium (viola #8b5cf6 → cyano #22d3ee, fondo scuro elegante), tono confessionale. 1) COVER: «Non salti lo stop per strategia. Lo salti per paura.». 2) Lo stop loss è un'ammissione: 'mi sono sbagliato'. 3) Avversione alla perdita (bias reale: la perdita 'pesa' circa il doppio del guadagno equivalente). 4) La speranza del 'torna su'. 5) Risultato: perdite piccole che diventano grandi. 6) La soluzione: lo stop si decide PRIMA di entrare, quando sei lucido. 7) ENDCARD: «Salva questo. Commenta FX e ti arriva il link del gruppo gratuito in DM.»" },
     ],
     caption: "Sposti lo stop 'solo stavolta' e poi il conto sanguina. Non è indisciplina, è psicologia. Salva questo post. Commenta FX e ti arriva il link del gruppo gratuito in DM.",
     metrics: { views: 0, likes: 0, comments: 0, shares: 0, saves: 0, reach: 0, engagement: 0 },
   },
   {
     id: "R5", title: "POV: sei in gain e non sai se chiudere", format: "Reel",
-    objective: ["Engagement"], date: "2026-08-07", platform: "Instagram",
+    objective: ["Engagement"], date: "2026-08-28", platform: "Instagram",
     status: "da-registrare", angle: "POV / Psicologia", focus: "Reach",
     hook: "POV: +30 pips sull'oro e il dito trema.",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
@@ -207,20 +207,20 @@ const CONTENT = [
   },
   {
     id: "C5", title: "6 abitudini di chi tratta l'oro con costanza", format: "Carosello",
-    objective: ["Authority", "Save"], date: "2026-08-10", platform: "Instagram",
+    objective: ["Authority", "Save"], date: "2026-08-31", platform: "Instagram",
     status: "da-registrare", angle: "Abitudini", focus: "Reach",
     hook: "Le 6 abitudini di chi tratta l'oro con costanza (nessuna riguarda l'analisi).",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
     accent: ["#7c3aed", "#3ce0ff"],
     shots: [
-      { kind: "graphic", label: "Carosello 8 slide (aspirazionale realistico)", script: "8 slide, modello aspirazionale ma realistico. 1) COVER: «Le 6 abitudini di chi tratta l'oro con costanza (nessuna riguarda l'analisi)». 2) Journaling. 3) Rischio fisso. 4) Orari selettivi. 5) Meno schermo. 6) Regole scritte. 7) Pazienza. 8) ENDCARD: «Quante ne hai già? Inizia da una. Commenta FX per il link del gruppo gratuito in DM.»" },
+      { kind: "graphic", label: "Carosello 8 slide (palette viola/cyano premium, aspirazionale realistico)", script: "8 slide, palette VIOLA/CYANO premium (viola #8b5cf6 → cyano #22d3ee, fondo scuro elegante), tono aspirazionale ma realistico. 1) COVER: «Le 6 abitudini di chi tratta l'oro con costanza (nessuna riguarda l'analisi)». 2) Journaling. 3) Rischio fisso. 4) Orari selettivi (l'oro si muove di più nell'overlap Londra–New York, ~14:30-17:00 ora italiana). 5) Meno schermo. 6) Regole scritte. 7) Pazienza. 8) ENDCARD: «Quante ne hai già? Inizia da una. Commenta FX per il link del gruppo gratuito in DM.»" },
     ],
     caption: "Journaling, rischio fisso, orari, meno schermo, regole scritte, pazienza. Quante ne hai già? Salva e inizia da una sola. Commenta FX e ti arriva il link del gruppo gratuito in DM.",
     metrics: { views: 0, likes: 0, comments: 0, shares: 0, saves: 0, reach: 0, engagement: 0 },
   },
   {
     id: "R6", title: "Da 10 trade al giorno a 2 a settimana", format: "Reel",
-    objective: ["Authority", "Telegram"], date: "2026-08-12", platform: "Instagram",
+    objective: ["Authority", "Telegram"], date: "2026-09-02", platform: "Instagram",
     status: "da-registrare", angle: "Case study / Prima-Dopo", focus: "Reach",
     hook: "Facevo 10 trade al giorno. Era il problema.",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
@@ -234,28 +234,27 @@ const CONTENT = [
   },
   {
     id: "ADV", title: "Dai videogiochi al trading dell'oro — la mia storia", format: "Video Ads",
-    objective: ["Telegram"], date: "2026-08-13", platform: "Meta Ads",
+    objective: ["Telegram"], date: "2026-09-03", platform: "Meta Ads",
     status: "da-registrare", angle: "Storia personale / Origin", focus: "Conversione",
     hook: "Mi dicevano che coi videogiochi non avrei combinato niente.",
     cta: "Entra nel gruppo gratuito dal link.",
     accent: ["#8b5cf6", "#22d3ee"],
     shots: [
       { kind: "talking", label: "Talking head 9:16 — storia gaming → oro (50-60s)", script: "Talking head 9:16, tono personale e autentico (stai raccontando, non vendendo), sottotitoli sempre.\n[0-5s · HOOK] «Da ragazzino mi dicevano che coi videogiochi non avrei combinato niente nella vita. Oggi ti dico che quelle ore sono la cosa più utile che io abbia mai fatto.»\n[5-18s · LA STORIA] «Ho passato anni davanti a uno schermo. Partite perse, riprovate, studiate una per una. E senza rendermene conto stavo allenando tre cose: leggere schemi in fretta, restare lucido quando tutto sta andando a rotoli, e analizzare i miei errori invece di prendermela con gli altri.»\n[18-33s · LA SVOLTA] «Poi ho scoperto il trading sull'oro, e ho avuto un déjà-vu totale: erano le STESSE identiche cose. Riconoscere pattern, gestire l'emozione dopo una perdita, rivedere le 'partite' per capire dove ho sbagliato. L'unica differenza è che il campo da gioco adesso è il grafico dell'oro. E ci ho messo lo stesso, identico impegno che mettevo nel gaming.»\n[33-46s · IL PAYOFF — compliant] «Attenzione: non sono qui a dirti che sono diventato ricco. Non funziona così, e chiunque te lo prometta ti sta prendendo in giro. Ti dico un'altra cosa, più vera: per la prima volta quelle migliaia di ore hanno un senso, e questa strada mi sta dando soddisfazioni reali — di quelle che senti dentro.»\n[46-58s · CTA — ultimi secondi] «Ho aperto un gruppo Telegram gratuito dove condivido come leggo l'oro, ogni giorno, senza promesse e senza vendere sogni. Se in questa storia ci ti sei ritrovato, entra dal link. È gratis, e non ti costa niente provare.»\n[DELIVERY] Sguardo in camera, pause sincere. Sotto 'le stesse cose' parte il b-roll prima/dopo (gaming → trading). Endcard CTA + disclaimer negli ultimi 8s." },
-      { kind: "broll", label: "B-roll prima/dopo — setup gaming → setup trading", script: "Montaggio 'prima/dopo': setup gaming (controller, cuffie, luci RGB, eventuali clip/foto di gioco) che sfuma nel setup di trading attuale (grafici XAUUSD, calendario economico, scrivania sobria). Stesso ragazzo, stesso schermo, obiettivo diverso — sostiene la narrazione 'stesse skill, nuovo campo'." },
-      { kind: "graphic", label: "Sottotitoli su tutto + endcard CTA + disclaimer", script: "Sottotitoli su tutto il video (obbligatori per l'ADV Meta) + endcard negli ultimi 8s: «Gruppo Telegram gratuito → link», freccia. Disclaimer piccolo ma leggibile: «Il trading comporta rischi. Contenuto informativo, non consulenza finanziaria. Nessun rendimento garantito.»" },
+      { kind: "graphic", label: "Montaggio prima/dopo + sottotitoli + endcard + disclaimer", script: "MONTAGGIO 'prima/dopo' (sotto 'le stesse cose'): setup gaming (controller, cuffie, luci RGB, eventuali clip/foto di gioco) che sfuma nel setup di trading attuale (grafici XAUUSD, calendario economico, scrivania). Stesso ragazzo, stesso schermo, obiettivo diverso. + Sottotitoli su tutto il video (obbligatori per l'ADV Meta) + endcard negli ultimi 8s: «Gruppo Telegram gratuito → link», freccia. Disclaimer piccolo ma leggibile: «Il trading comporta rischi. Contenuto informativo, non consulenza finanziaria. Nessun rendimento garantito.»" },
     ],
     caption: "Da ragazzino mi dicevano che coi videogiochi non avrei fatto niente. Quelle ore mi hanno insegnato a leggere schemi, restare lucido e studiare gli errori — le stesse cose che oggi uso sull'oro. Non prometto guadagni: condivido un metodo, e mi sta dando soddisfazioni vere. Entra nel gruppo Telegram gratuito dal link.",
     metrics: { views: 0, likes: 0, comments: 0, shares: 0, saves: 0, reach: 0, engagement: 0 },
   },
   {
     id: "C6", title: "Sala segnali e copy: cosa è (e cosa NON è)", format: "Carosello",
-    objective: ["Telegram"], date: "2026-08-14", platform: "Instagram",
+    objective: ["Telegram"], date: "2026-09-04", platform: "Instagram",
     status: "da-registrare", angle: "FAQ funnel", focus: "Conversione",
     hook: "\"Sala segnali\" e \"copy\": cosa sono davvero. Senza favole.",
     cta: "Commenta FX e ti arriva il link del gruppo gratuito in DM.",
     accent: ["#7c3aed", "#3ce0ff"],
     shots: [
-      { kind: "graphic", label: "Carosello 7 slide (educativo, compliant)", script: "7 slide, tono educativo e compliant (FAQ funnel). 1) COVER: «'Sala segnali' e 'copy': cosa sono davvero. Senza favole.» 2) Non sono un pulsante magico. 3) Sala segnali = analisi condivisa in tempo reale per imparare a vedere. 4) Copy = replicare un'operatività capendo il rischio. 5) Anche il metodo migliore ha operazioni in perdita. 6) Il punto di partenza giusto è il gruppo gratuito. 7) ENDCARD: «Inizia da qui, gratis e senza impegno. Commenta FX e ti arriva il link in DM.»" },
+      { kind: "graphic", label: "Carosello 7 slide (palette viola/cyano premium, educativo compliant)", script: "7 slide, palette VIOLA/CYANO premium (viola #8b5cf6 → cyano #22d3ee, fondo scuro elegante), tono educativo e compliant (FAQ funnel). 1) COVER: «'Sala segnali' e 'copy': cosa sono davvero. Senza favole.» 2) Non sono un pulsante magico. 3) Sala segnali = analisi condivisa in tempo reale per imparare a vedere. 4) Copy = replicare un'operatività capendo il rischio. 5) Anche il metodo migliore ha operazioni in perdita. 6) Il punto di partenza giusto è il gruppo gratuito. 7) ENDCARD: «Inizia da qui, gratis e senza impegno. Commenta FX e ti arriva il link in DM.»" },
     ],
     caption: "Segnali e copy non sono bacchette magiche. Il punto di partenza giusto è il gruppo gratuito: guardi come ragioniamo, senza spendere nulla. Commenta FX e ti arriva il link del gruppo gratuito in DM.",
     metrics: { views: 0, likes: 0, comments: 0, shares: 0, saves: 0, reach: 0, engagement: 0 },
@@ -268,19 +267,9 @@ const CONTENT = [
  *  contenuti (CONTENT.shots), che restano la fonte di verità.         *
  * ------------------------------------------------------------------ */
 const PRODUCTION_GENERIC = [
-  { kind: "broll", label: "Caffè versato / tazza sulla scrivania", script: "Dettaglio ravvicinato, luce naturale, movimento lento. 3-5s. Estetica sobria, niente lusso ostentato." },
-  { kind: "broll", label: "Mani alla tastiera / dito sul mouse (primi piani)", script: "Primi piani delle mani, gesti calmi e decisi (nessuna fretta). 3-5s. Inserto sotto le battute sul metodo." },
-  { kind: "broll", label: "Notebook + penna, appunti scritti a mano", script: "Inquadratura dall'alto di appunti scritti a mano — es. 'entrata / stop / target'. 3-5s. Rinforza il tema del piano scritto." },
-  { kind: "broll", label: "Monitor multipli accesi (grafici, calendario economico)", script: "Carrellata lenta o messa a fuoco che entra sui monitor con grafici e calendario economico. 3-5s. Trasmette metodo, non frenesia." },
-  { kind: "broll", label: "Camminata verso la postazione", script: "Figura di spalle, passo tranquillo verso la scrivania. 3-5s. Apertura/stacco per i Reel routine (R4)." },
-  { kind: "broll", label: "Persona seduta che osserva i grafici", script: "Profilo o tre quarti, sguardo concentrato sui grafici, nessuna reazione eccessiva. 3-5s." },
-  { kind: "broll", label: "Primo piano occhi / espressione concentrata", script: "Primissimo piano su occhi/espressione per i momenti di tensione (es. R5 'il dito trema'). 2-3s." },
-  { kind: "broll", label: "Dettagli postazione, luce naturale (no lusso)", script: "Dettagli sobri della postazione (tazza, mouse, quaderno) in luce naturale. 3-5s. Coerenza estetica su tutti i Reel." },
-  { kind: "screen", label: "Registrazioni generiche scroll/analisi (b-roll)", script: "20-30s di materiale neutro sulla piattaforma (movimento del prezzo, apertura grafico, zoom lento su una zona) da usare come riempitivo sotto le voci parlate. Movimenti lenti, nessun numero di profitto a schermo." },
-  { kind: "vo", label: "VO di scorta per storie/b-roll", script: "Registra 20-30s di voice over neutro di scorta: 2-3 frasi brevi sul metodo/rischio, senza numeri né promesse (es. «Sull'oro non serve prevedere, serve reagire con un piano.»). Tappabuchi audio per storie e b-roll." },
   { kind: "talking", label: "3-4 hook parlati extra per A/B test", script: "Registra 3-4 hook secchi da 3-5s guardando dritto in camera, primo secondo senza preamboli: 1) «Prima di premere BUY sull'oro, guarda questo.» 2) «Il 90% perde sull'oro per un solo motivo.» 3) «Non è l'analisi a bruciarti il conto.» 4) «Ti hanno mentito sull'oro come bene rifugio.» Tono diretto, nessuna musica." },
-  { kind: "graphic", label: "Template testo animato (hook, sottotitoli)", script: "Template per hook e sottotitoli: font pulito, palette scura/oro, comparsa parola-per-parola. Deve reggere l'hook a schermo nei primi 1-2s e i sottotitoli sull'intero Reel (obbligatori per l'ADV)." },
-  { kind: "graphic", label: "Lower third con @iipersian", script: "Lower third discreto in basso con handle @iipersian, coerente col brand, da sovrapporre ai talking head senza coprire i sottotitoli." },
+  { kind: "graphic", label: "Template testo animato (hook, sottotitoli)", script: "Template per hook e sottotitoli: font pulito, palette viola/cyano premium (viola #8b5cf6 → cyano #22d3ee su fondo scuro), comparsa parola-per-parola. Deve reggere l'hook a schermo nei primi 1-2s e i sottotitoli sull'intero Reel (obbligatori per l'ADV)." },
+  { kind: "graphic", label: "Lower third con @iipersian", script: "Lower third discreto in basso con handle @iipersian, coerente col brand (viola/cyano), da sovrapporre ai talking head senza coprire i sottotitoli." },
   { kind: "graphic", label: "Endcard 'gruppo gratuito – link in bio'", script: "Endcard finale da 2-3s con CTA 'gruppo gratuito – link in bio' e freccia verso la bio. Uguale su tutti i Reel per riconoscibilità del funnel." },
 ];
 
@@ -417,7 +406,7 @@ const TELEGRAM = {
   historyAvailable: false,
   // Metriche non tracciabili finché non c'è il bot:
   newDaily: null, newWeekly: null, newMonthly: null, growthPct: null,
-  correlation: [], // si popola quando la campagna parte (20 Lug) + tracking attivo
+  correlation: [], // si popola quando la campagna parte (10 Ago) + tracking attivo
 };
 
 /* ------------------------------------------------------------------ *
@@ -433,7 +422,7 @@ const REPORT_SUGGESTIONS = {
     "I Reel già a tema trading/forex (Over Trading, Solo analisi, Sto tornando 'fx') reggono in linea col lifestyle: il pubblico da 27,6k regge il pivot verso GOLD.",
     "\"Solo analisi assieme, niente corsi né da venderti\" (ER 4,8%) valida l'angolo compliant: niente vendita diretta → più fiducia. Da tenere come tono di tutti i contenuti.",
     "La CTA \"commenta 'fx' per l'invito\" (Reel 14/05) è già un funnel Telegram funzionante: standardizzarla in R1–R6.",
-    "Engagement medio 4,8% su 27,6k follower = buona reach organica per lanciare la serie GOLD dal 20 Lug.",
+    "Engagement medio 4,8% su 27,6k follower = buona reach organica per lanciare la serie GOLD dal 10 Ago.",
   ],
   newIdeas: [
     "Reel 'over-the-shoulder' settimanale su un setup GOLD reale (compliant).",
