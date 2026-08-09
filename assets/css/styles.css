@@ -657,17 +657,16 @@ html.pfx-locked .app { display: none; }
 
 /* ----------------------------- Cursor glow ----------------------------- */
 #cursor-glow {
-  position: fixed; top: 0; left: 0; width: 440px; height: 440px; border-radius: 50%;
+  position: fixed; top: 0; left: 0; width: 460px; height: 460px; border-radius: 50%;
   pointer-events: none; z-index: 90; transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(139, 92, 246, 0.40), rgba(124, 92, 246, 0.12) 42%, transparent 68%);
-  filter: blur(26px); mix-blend-mode: screen; will-change: transform, opacity;
+  background: radial-gradient(circle, rgba(139, 92, 246, 0.28), rgba(124, 92, 246, 0.08) 42%, transparent 70%);
+  filter: blur(34px); will-change: transform, opacity;
   opacity: 0; transition: opacity 0.45s ease;
 }
-#cursor-glow.on { opacity: 0.26; }
-#cursor-glow.on.moving { opacity: 0.55; }
+#cursor-glow.on { opacity: 0.14; }
+#cursor-glow.on.moving { opacity: 0.32; }
 [data-theme="light"] #cursor-glow {
-  mix-blend-mode: multiply;
-  background: radial-gradient(circle, rgba(124, 92, 246, 0.34), rgba(34, 211, 238, 0.10) 45%, transparent 68%);
+  background: radial-gradient(circle, rgba(124, 92, 246, 0.18), rgba(34, 211, 238, 0.07) 45%, transparent 70%);
 }
 /* Niente glow su touch / mouse assente o riduzione movimento */
 @media (hover: none), (pointer: coarse) { #cursor-glow { display: none !important; } }
