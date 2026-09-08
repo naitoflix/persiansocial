@@ -4,11 +4,11 @@
    SHA-256 in JS puro: funziona sia in HTTPS sia in HTTP (non dipende da
    crypto.subtle, che è disponibile solo in contesti sicuri).
    Per cambiare la password: calcola l'SHA-256 (hex) della nuova password e
-   sostituisci AUTH_HASH. Password temporanea attuale: "persian2026".
+   sostituisci AUTH_HASH. Password attuale: "danilo0510" (aggiornata: accesso riservato).
    ========================================================================== */
 (function () {
-  const AUTH_HASH = "a98afae8aea6cbca2a4792567bfcae5feae390d2294f37be091cab15affd591e";
-  const KEY = "pfx-auth-v1";
+  const AUTH_HASH = "e19347244ad2d0dbebac22f2754f4c18dadfd43217f18c4f1f15b50f12c15173";
+  const KEY = "pfx-auth-v2";
 
   const K = [
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
@@ -75,6 +75,8 @@
   function unlock() { document.documentElement.classList.remove("pfx-locked"); }
 
   document.addEventListener("DOMContentLoaded", function () {
+    // Le sessioni sbloccate con la vecchia password vengono invalidate.
+    try { localStorage.removeItem("pfx-auth-v1"); } catch (e) {}
     try { if (localStorage.getItem(KEY) === "1") unlock(); } catch (e) {}
 
     const form = document.getElementById("login-form");
@@ -92,7 +94,7 @@
         unlock();
         pass.value = "";
       } else {
-        err.textContent = "Password errata";
+        err.textContent = "Accesso non disponibile: password errata.";
         pass.value = "";
         pass.focus();
       }
